@@ -1,3 +1,25 @@
+<?php
+if(strpos($route, '/register/code') !== false){
+            
+    // falls vor .../index.php noch was steht
+    $explod_array = explode('/register/code',$route);
+    $route = '/register/code'.$explod_array[1];
+
+    $routeParts = explode('/',$route);
+    $registerCode = $routeParts[3];
+
+    if(confirmUserWithRegisterCode($registerCode)){
+        echo("<div class='alert alert-success text-center' role='alert'>
+                            Bestätigung erfolgreich!
+                            </div>");
+    }else{
+        echo("<div class='alert alert-danger text-center' role='alert'>
+                            Bestätigung war nicht erfolgreich!
+                            </div>");
+    }
+       
+        }else{  
+?>
 <div class="container">
     <h2>Registrierung</h2>
     <form method="post">
@@ -53,3 +75,6 @@
         <button type="submit" class="btn btn-primary">Registrieren</button>
     </form>
 </div>
+<?php
+        }
+?>

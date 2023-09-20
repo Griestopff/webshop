@@ -31,16 +31,13 @@ function getCurrentCookieUserId(){
 }
 
 //TODO example User, make register
-function insertNewUser(){
-    $username = "Griestopf";
-    $password = password_hash("12345678", PASSWORD_DEFAULT);
-    $email = "christophmanitz@gmail.com";
-    $first_name = "Christoph";
-    $last_name = "Manitz";
+function insertNewUser($username, $password, $email, $first_name, $last_name){
+    
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
     $registercode = rand(0,100000);
-    $approved = 1;
+    $approved = 0;
 
-    $sql = 'INSERT INTO user SET user_name="'.$username.'", password="'.$password.'", email="'.$email.'", first_name="'.$first_name.'", last_name="'.$last_name.'", registercode="'.$registercode.'", approved="'.$approved.'"';
+    #$sql = 'INSERT INTO user SET user_name="'.$username.'", password="'.$password.'", email="'.$email.'", first_name="'.$first_name.'", last_name="'.$last_name.'", registercode="'.$registercode.'", approved="'.$approved.'"';
 
     try {
         // Insert in table
@@ -48,17 +45,25 @@ function insertNewUser(){
         $stmt = getDB()->prepare($sql);
         $stmt->execute([
           ':username'=>$username,
-          ':password'=>$password,
+          ':password'=>$password_hash,
           ':email'=>$email,
           ':first_name'=>$first_name,
           ':last_name'=>$last_name,
           ':registercode'=>$registercode,
           ':approved'=>$approved
         ]);
+
+        //TODO baseurl hinzufügen
+        $link = '<a href="https://shxrt.de/index.php/register/code/'.$registercode.'">Anmeldung best&#228;tigen</a>';
+       
+        create_email("Rufen folgenden Link auf um deine Email zu best&#228;tigen:", $link, $email, NULL, "Email bestaetigen");
         
+        return true;
       } catch(PDOException $e) {
         // Handle any errors that occur during the insertion e.g. duplicate
         // echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
+
+        return false;
       }
 }
 
@@ -78,7 +83,7 @@ function login($user, $password):bool{
     if($result === false){
         return false;
     }
-
+    
     $userData = [];
     while ($row = $result->fetch()) {
         $userData[] = $row;
@@ -94,6 +99,31 @@ function login($user, $password):bool{
         }else{
             return false;
         }
+    }else{
+        return false;
+    }
+}
+
+function userApproved($userId):bool{
+    
+    $sql = 'SELECT user_name FROM user WHERE user_id='.$userId.' AND approved = 1;';
+    
+    
+    $result = getDB()->query($sql);
+    // false if connection error to DB
+    if($result === false){
+        return false;
+    }
+    
+    $userData = [];
+    while ($row = $result->fetch()) {
+        $userData[] = $row;
+    }
+    //checks if a colummn with given email/name and password is set
+    if(count($userData) < 1){
+        return false;
+    }elseif(count($userData) == 1){
+        return true;
     }else{
         return false;
     }
@@ -129,7 +159,7 @@ function getUserNameByID($userId){
 }
 
 function getUserDataById($userId){
-    $sql = 'SELECT user_name, email, first_name, last_name FROM user WHERE user_id="'.$userId.'"';
+    $sql = 'SELECT user_name, email, first_name, last_name, registercode FROM user WHERE user_id="'.$userId.'"';
     $result = getDB()->query($sql);
     // false if connection error to DB
     if($result === false){
@@ -515,7 +545,7 @@ function checkPassword($password) {
     
     // Überprüfe, ob das gefilterte Passwort immer noch dem Original entspricht
     if ($filteredPassword === $password) {
-        return true; // Das Passwort enthält nur erlaubte Zeichen
+        return $password; // Das Passwort enthält nur erlaubte Zeichen
     } else {
         return false; // Das Passwort enthält unerlaubte Zeichen
     }
@@ -533,6 +563,24 @@ function userOrEmailTaken($username, $email){
     if($count['user_id_count'] > 0){
         return true;
     }else{
+        return false;
+    }
+}
+
+function confirmUserWithRegisterCode($registerCode):bool{
+    try {    
+        // SQL Prepared Statement
+        $sql = "UPDATE user SET approved = 1 WHERE registercode= :register_code";
+
+        // Prepared Statement
+        $stmt = getDB()->prepare($sql);
+        $stmt->execute([
+            ':register_code'=>$registerCode
+        ]);
+        return true;
+    } catch (PDOException $e) {
+        // Handle any errors that occur during the update
+        // echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
         return false;
     }
 }

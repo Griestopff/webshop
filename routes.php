@@ -216,7 +216,7 @@ if (strpos($route, '/addresses/delete/shipping') !== false){
 ########### CHECKOUT #########
 
 if (strpos($route, '/checkout/shipping') !== false){
-    if(everyCartItemHasColorAndSize($userId) && userHasCompletShippingInformation($userId)){
+    if(everyCartItemHasColorAndSize($userId) && userHasCompletShippingInformation($userId) && userApproved($userId)){
         //TODO
         $_SESSION['checkoutStatus'] = 'RUNNING';
         createNewTmpOrder($userId, 1);
@@ -231,7 +231,7 @@ if (strpos($route, '/checkout/shipping') !== false){
 //creates order for Paypal
 if (strpos($route, '/checkout/paymentSelection') !== false){
     //if logged in and a payment method was selected (paypal) create order with accesstoken
-    if(userIsLoggedIn($userId)){
+    if(userIsLoggedIn($userId) && userApproved($userId)){
         if(isset($_POST['payment'])){
             if($_POST['payment'] === 'paypal'){
                 $accessToken = getAccessToken(); 
@@ -252,7 +252,7 @@ if (strpos($route, '/checkout/paymentSelection') !== false){
 
 if (strpos($route, '/checkout/paymentComplete') !== false){
     //if user is logged in get cash from customer
-    if(userIsLoggedIn($userId)){
+    if(userIsLoggedIn($userId) && userApproved($userId)){
         #TODO
         #if(PAYPAL){}
         if(isset($_POST['token']) && isset($_POST['PayerID']) && isset($_SESSION['orderCode']) && $_SESSION['checkoutStatus'] == 'RUNNING'){
@@ -289,7 +289,7 @@ if (strpos($route, '/register') !== false){
     (isset($_POST['password']) && $_POST['password'] !== NULL) &&
     (isset($_POST['confirm_password']) && $_POST['confirm_password'] !== NULL)){
         $username = preg_replace('/[^a-zA-Z0-9ßäöüÄÖÜ]/u', '', $_POST['username']);
-        $fist_name = preg_replace('/[^a-zA-Z0-9ßäöüÄÖÜ ]/u', '', $_POST['first_name']);
+        $first_name = preg_replace('/[^a-zA-Z0-9ßäöüÄÖÜ ]/u', '', $_POST['first_name']);
         $last_name = preg_replace('/[^a-zA-Z0-9ßäöüÄÖÜ ]/u', '', $_POST['last_name']);
         $email = $_POST['email'];
         $emailRepeat = $_POST['emailRepeat'];
@@ -301,13 +301,13 @@ if (strpos($route, '/register') !== false){
                     if($password !== false){
                         if(!userOrEmailTaken($username, $email)){
                             echo("<div class='alert alert-success text-center' role='alert'>
-                            Du erhälst eine Email zum bestätigen!
+                            Deine Registrierung war erfolgreich, du erhälst eine Email zum bestätigen danach kannst du dich einloggen!
                             </div>");
-                            //create User mit approved 0 -> funktion sedet auch email
-                            //login user
-                            //header zu profil
-
-                            //email zu link /optin/registercode -> button zum bestätigen dann approved 1
+                            $insertSuccessfull = insertNewUser($username, $password, $email, $first_name, $last_name);
+                            if($insertSuccessfull){
+                                //login user
+                                //header zu profil
+                            }
                         }else{
                             echo("<div class='alert alert-danger text-center' role='alert'>
                             Der Username oder die Email ist bereits vohanden!

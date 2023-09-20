@@ -1,5 +1,11 @@
 <?php
     $userData = getUserDataById($userId);
+    if(isset($_POST['emailReapeat'])){
+        //TODO baseurl hinzufügen
+        $link = '<a href="https://shxrt.de/index.php/register/code/'.$userData['registercode'].'">Anmeldung best&#228;tigen</a>';
+        create_email("Rufen folgenden Link auf um deine Email zu best&#228;tigen:", $link, $userData['email'], NULL, "Email bestaetigen");
+    }
+
 ?>
 <div class="card">
                     <div class="card-header">
@@ -21,6 +27,16 @@
                             </li>
                             <!-- Hier können weitere Benutzerinformationen hinzugefügt werden -->
                         </ul>
+                        <?php
+                            if(!userApproved($userId)){
+                                echo("<div class='alert alert-danger text-center' role='alert'>
+                                Dein Account ist noch nicht bestätigt!
+                                <form method='post'>
+                                    <button type='submit' name='emailReapeat' class='btn btn-primary'>Email erneut senden</button>
+                                </form>
+                                </div>");
+                            }
+                        ?>
                     </div>
                     <div class="card-footer">
                         <h5>Sonstiges</h5>
