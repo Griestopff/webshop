@@ -65,7 +65,7 @@
             <ul class="list-group">
                 <li class="list-group-item">
                     <strong>Person:</strong> 
-                    <input type="text" id="location" name="location" placeholder="Ort" pattern="^[a-zA-Z0-9\säöüßÄÖÜ.,]+$" value="<?php echo($shippingAddress['person']); ?>">
+                    <input type="text" id="person" name="person" placeholder="Vor- und Nachname" pattern="^[a-zA-Z0-9\säöüßÄÖÜ.,]+$" value="<?php echo($shippingAddress['person']); ?>">
                 </li>
                 <li class="list-group-item">
                     <strong>Ort:</strong> 
