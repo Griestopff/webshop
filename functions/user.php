@@ -347,7 +347,7 @@ function changeAddress($addressType, $userId, $location, $street, $number, $post
             ':user_id'=>$userId
             ]);
         }elseif($addressType == 'shipping'){
-            $sql = "UPDATE billing_address SET
+            $sql = "UPDATE shipping_address SET
                     location = :location,
                     postal_code = :postal_code,
                     street = :street,
