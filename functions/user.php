@@ -324,32 +324,53 @@ function getAllWishlistItemsByUserId($userId){
     return $wishlistProducts; 
 }
 
-function changeAddress($addressType, $userId, $location, $street, $number, $postal_code, $additional_info){
+function changeAddress($addressType, $userId, $location, $street, $number, $postal_code, $additional_info, $person){
     try {    
         // SQL Prepared Statement
         if($addressType == 'billing'){
-            $update = "UPDATE billing_address ";
-        }elseif($addressType == 'shipping'){
-            $update = "UPDATE shipping_address ";
-        }
-        $sql = $update."SET
+            $sql = "UPDATE billing_address SET
                     location = :location,
                     postal_code = :postal_code,
                     street = :street,
                     number = :number,
                     additional_info = :additional_info
                 WHERE user_id = :user_id";
+
+            // Prepared Statement
+            $stmt = getDB()->prepare($sql);
+            $stmt->execute([
+            ':location'=>$location,
+            ':postal_code'=>$postal_code,
+            ':street'=>$street,
+            ':number'=>$number,
+            ':additional_info'=>$additional_info,
+            ':user_id'=>$userId
+            ]);
+        }elseif($addressType == 'shipping'){
+            $sql = "UPDATE billing_address SET
+                    location = :location,
+                    postal_code = :postal_code,
+                    street = :street,
+                    number = :number,
+                    additional_info = :additional_info,
+                    person = :person
+                WHERE user_id = :user_id";
+
+            // Prepared Statement
+            $stmt = getDB()->prepare($sql);
+            $stmt->execute([
+            ':location'=>$location,
+            ':postal_code'=>$postal_code,
+            ':street'=>$street,
+            ':number'=>$number,
+            ':additional_info'=>$additional_info,
+            ':user_id'=>$userId,
+            ':person'=>$person
+            ]);
+        }
+        
     
-        // Prepared Statement
-        $stmt = getDB()->prepare($sql);
-        $stmt->execute([
-          ':location'=>$location,
-          ':postal_code'=>$postal_code,
-          ':street'=>$street,
-          ':number'=>$number,
-          ':additional_info'=>$additional_info,
-          ':user_id'=>$userId
-        ]);
+        
     } catch (PDOException $e) {
         // Handle any errors that occur during the update
          echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();

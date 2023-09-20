@@ -162,6 +162,7 @@ if (strpos($route, '/wishlist/remove') !== false){
 if (strpos($route, '/account/addresses/edit') !== false){
     if((isset($_POST['location'])) && (isset($_POST['street'])) && (isset($_POST['number'])) && (isset($_POST['postal_code'])) && (isset($_POST['additional_info']))){
         // remove special characters, allow letters, numbers, ".", ",", "/", "ß" and umlaute
+        $person = preg_replace('/[^a-zA-Z0-9.,\/ßäöüÄÖÜ ]/u', '', $_POST['person']);
         $location = preg_replace('/[^a-zA-Z0-9.,\/ßäöüÄÖÜ]/u', '', $_POST['location']);
         $street = preg_replace('/[^a-zA-Z0-9.,\/ßäöüÄÖÜ]/u', '', $_POST['street']);
         $number = preg_replace('/[^0-9.,\/]/u', '', $_POST['number']);
@@ -176,7 +177,7 @@ if (strpos($route, '/account/addresses/edit') !== false){
         $addressType = $routeParts[4];
         
         if(userIsLoggedIn($userId)){
-            changeAddress($addressType, $userId, $location, $street, $number, $postal_code, $additional_info);
+            changeAddress($addressType, $userId, $location, $street, $number, $postal_code, $additional_info, $person);
         }
             
         else{
