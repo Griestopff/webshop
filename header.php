@@ -34,7 +34,8 @@
             <?php
               if(!userIsLoggedIn($userId)){
                 
-            echo('<a href="'.$baseurl.'index.php/login" class="right">Login</a>');
+            echo('<a href="'.$baseurl.'index.php/login" class="right">Login</a>
+                  <a href="'.$baseurl.'index.php/register" class="right">Registrieren</a>');
               }else{
                 echo('<a href="'.$baseurl.'index.php/account" class="right">Konto</a>');
               }

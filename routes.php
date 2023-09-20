@@ -275,3 +275,63 @@ if (strpos($route, '/checkout/paymentComplete') !== false){
         exit();
     }
 }
+
+########### CHECKOUT #########
+
+if (strpos($route, '/register') !== false){
+    
+
+    if((isset($_POST['username']) && $_POST['username'] !== NULL) &&
+    (isset($_POST['first_name']) && $_POST['first_name'] !== NULL) &&
+    (isset($_POST['last_name']) && $_POST['last_name'] !== NULL) &&
+    (isset($_POST['email']) && $_POST['email'] !== NULL) &&
+    (isset($_POST['emailRepeat']) && $_POST['emailRepeat'] !== NULL) &&
+    (isset($_POST['password']) && $_POST['password'] !== NULL) &&
+    (isset($_POST['confirm_password']) && $_POST['confirm_password'] !== NULL)){
+        $username = preg_replace('/[^a-zA-Z0-9ßäöüÄÖÜ]/u', '', $_POST['username']);
+        $fist_name = preg_replace('/[^a-zA-Z0-9ßäöüÄÖÜ ]/u', '', $_POST['first_name']);
+        $last_name = preg_replace('/[^a-zA-Z0-9ßäöüÄÖÜ ]/u', '', $_POST['last_name']);
+        $email = $_POST['email'];
+        $emailRepeat = $_POST['emailRepeat'];
+        $password = checkPassword($_POST['password']);
+        $passwordConfirm = checkPassword($_POST['confirm_password']);
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) && filter_var($emailRepeat, FILTER_VALIDATE_EMAIL)) {
+            if($email == $emailRepeat){
+                if($password == $passwordConfirm){
+                    if($password !== false){
+                        if(!userOrEmailTaken($username, $email)){
+                            echo("<div class='alert alert-success text-center' role='alert'>
+                            Du erhälst eine Email zum bestätigen!
+                            </div>");
+                            //create User mit approved 0 -> funktion sedet auch email
+                            //login user
+                            //header zu profil
+
+                            //email zu link /optin/registercode -> button zum bestätigen dann approved 1
+                        }else{
+                            echo("<div class='alert alert-danger text-center' role='alert'>
+                            Der Username oder die Email ist bereits vohanden!
+                            </div>");
+                        }
+                    }else{
+                        echo("<div class='alert alert-danger text-center' role='alert'>
+                        Es sind nicht erlaubt Zeichen im Passwort vorhanden!
+                        </div>");
+                    }
+                }else{
+                    echo("<div class='alert alert-danger text-center' role='alert'>
+                    Dein Passwort stimmt nicht überein!
+                    </div>");
+                }
+            }else{
+                echo("<div class='alert alert-danger text-center' role='alert'>
+                Deine Email stimmt nicht überein!
+                </div>");
+            }
+        }else{
+            echo("<div class='alert alert-danger text-center' role='alert'>
+                Das ist kein gültige Email!
+                </div>");
+        }
+    }
+}

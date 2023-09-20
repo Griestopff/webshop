@@ -505,3 +505,34 @@ function userHasCompletShippingInformation($userId):bool{
         }
     }
 }
+
+function checkPassword($password) {
+    // Definiere einen regulären Ausdruck, der nur erlaubte Zeichen zulässt
+    $allowedCharacters = '/[^a-zA-Z0-9!@#$%&*()]/u';
+
+    // Entferne alle Zeichen, die nicht im erlaubten Zeichensatz sind
+    $filteredPassword = preg_replace('/[^a-zA-Z0-9!@#$%&*()]/u', '', $password);
+    
+    // Überprüfe, ob das gefilterte Passwort immer noch dem Original entspricht
+    if ($filteredPassword === $password) {
+        return true; // Das Passwort enthält nur erlaubte Zeichen
+    } else {
+        return false; // Das Passwort enthält unerlaubte Zeichen
+    }
+}
+
+function userOrEmailTaken($username, $email){
+    $sql = 'SELECT COUNT(user_id) AS user_id_count FROM user WHERE user_name = "'.$username.'" OR email = "'.$email.'";';
+    $result = getDB()->query($sql);
+    // false if connection error to DB
+    if($result === false){
+        return false;
+    }
+
+    $count = $result->fetch();
+    if($count['user_id_count'] > 0){
+        return true;
+    }else{
+        return false;
+    }
+}

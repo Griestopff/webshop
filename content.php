@@ -30,6 +30,9 @@ if(strpos($route, '/product') !== false){
 }elseif(strpos($route, '/checkout') !== false){
     include(__DIR__."/contents/checkoutpage.php");
 // Default case: Include the front page content
+}elseif(strpos($route, '/register') !== false){
+    include(__DIR__."/contents/registerpage.php");
+// Default case: Include the front page content
 }else{
     include(__DIR__."/contents/frontpage.php");
 }
