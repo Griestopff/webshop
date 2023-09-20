@@ -1,0 +1,18 @@
+/* Stil für die Menüleiste */
+nav {
+    background-color: #333;
+    overflow: hidden;
+  }
+  
+  /* Stil für die Links in der Menüleiste */
+  nav a {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  /* Stil für die rechtsbündigen Links */
+  .right {
+    float: right;
+  }

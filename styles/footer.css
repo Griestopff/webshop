@@ -1,0 +1,17 @@
+ /* Stil für den Footer-Bereich */
+ footer {
+    background-color: #f2f2f2;
+    padding: 20px;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    
+  }
+  footer ul{
+    list-style-type: none;
+  }
+  /* Stil für die Links im Footer-Bereich */
+  footer a {
+    color: #333;
+    text-decoration: none;
+  }
