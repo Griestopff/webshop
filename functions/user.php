@@ -87,6 +87,7 @@ function login($user, $password):bool{
         return false;
     }
     
+    //get the user data as array, where every index is a column
     $userData = [];
     while ($row = $result->fetch()) {
         $userData[] = $row;
@@ -125,16 +126,15 @@ function login($user, $password):bool{
 }
 
 function userApproved($userId):bool{
-    
+
     $sql = 'SELECT user_name FROM user WHERE user_id='.$userId.' AND approved = 1;';
-    
     
     $result = getDB()->query($sql);
     // false if connection error to DB
     if($result === false){
         return false;
     }
-    
+    //get the user data as array, where every index is a column
     $userData = [];
     while ($row = $result->fetch()) {
         $userData[] = $row;
@@ -169,7 +169,7 @@ function getUserNameByID($userId){
     if($result === false){
         return false;
     }
-
+    //get the user data as array, where every index is a column
     $userData = [];
     while ($row = $result->fetch()) {
         $userData[] = $row;
@@ -185,7 +185,7 @@ function getUserDataById($userId){
     if($result === false){
         return false;
     }
-
+    //get the user data as array, where every index is a column
     $userData = [];
     while ($row = $result->fetch()) {
         $userData[] = $row;
@@ -217,7 +217,7 @@ function getBillingAddressByUserId($userId){
     if($result === false){
         return false;
     }
-
+    //get the billing address as array, where every index is a column(should be one)
     $billingAddress = [];
     while ($row = $result->fetch()) {
         $billingAddress[] = $row;
@@ -233,7 +233,7 @@ function UserHasShippingAddress($userId){
     if($result === false){
         return false;
     }
-
+    //get the shipping address as array, where every index is a column(should be one)
     $count = $result->fetch();
     if($count['shipping_address_count'] == 1){
         return true;
@@ -249,7 +249,7 @@ function getShippingAddressByUserId($userId){
     if($result === false){
         return false;
     }
-
+    //get the billing address as array, where every index is a column(should be one)
     $shippingAddress = [];
     while ($row = $result->fetch()) {
         $shippingAddress[] = $row;
@@ -265,7 +265,7 @@ function getAllOrdersByUserId($userId){
     if($result === false){
         return false;
     }
-
+    //get the orders as array, where every index is a column/order
     $userOrders = [];
     while ($row = $result->fetch()) {
         $userOrders[] = $row;
@@ -281,7 +281,7 @@ function getAllOrderItemsByOrderId($orderId){
     if($result === false){
         return false;
     }
-
+    //get the order items of a order as array, where every index is a column/orderitem
     $orderItems = [];
     while ($row = $result->fetch()) {
         $orderItems[] = $row;
@@ -365,7 +365,7 @@ function getAllWishlistItemsByUserId($userId){
     if($result === false){
         return false;
     }
-
+    //get the product from the wishlist as array, where every index is a column/product
     $wishlistProducts = [];
     while ($row = $result->fetch()) {
         $wishlistProducts[] = $row;
@@ -418,9 +418,6 @@ function changeAddress($addressType, $userId, $location, $street, $number, $post
             ':person'=>$person
             ]);
         }
-        
-    
-        
     } catch (PDOException $e) {
         // Handle any errors that occur during the update
          echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
@@ -438,7 +435,6 @@ function redirectIfNotLogged(string $sourceTarget, $userId)
     exit();
 }
 
-//TODO same name for billing and shipping address, use different names
 //changes the address values from table and the user real name to one string, for orders table
 function userShippingAddressForOderToString($userId){
     $userData = getUserDataById($userId);

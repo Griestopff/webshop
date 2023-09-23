@@ -34,14 +34,14 @@ if(strpos($route, '/register/code') !== false){
             <label for="first_name">Vorname:</label>
             <input type="text" class="form-control" id="first_name" name="first_name" required>
             <small id="passwordInfo" class="form-text text-muted">
-                Erlaubte Zeichen: Buchstaben (Groß- und Kleinbuchstaben), Zahlen, Umlaute und Leerzeichen für Doppelnamen
+                Echter Vorname für spätere Rechnungsaddresse (nicht mehr änderbar)<br>Erlaubte Zeichen: Buchstaben (Groß- und Kleinbuchstaben), Zahlen, Umlaute und Leerzeichen für Doppelnamen
             </small>
         </div>
         <div class="form-group">
             <label for="last_name">Nachname:</label>
             <input type="text" class="form-control" id="last_name" name="last_name" required>
             <small id="passwordInfo" class="form-text text-muted">
-                Erlaubte Zeichen: Buchstaben (Groß- und Kleinbuchstaben), Zahlen, Umlaute und Leerzeichen für Doppelnamen
+            Echter Nachname für spätere Rechnungsaddresse (nicht mehr änderbar)<br>Erlaubte Zeichen: Buchstaben (Groß- und Kleinbuchstaben), Zahlen, Umlaute und Leerzeichen für Doppelnamen
             </small>
         </div>
         <div class="form-group">
