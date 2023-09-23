@@ -276,11 +276,10 @@ if (strpos($route, '/checkout/paymentComplete') !== false){
     }
 }
 
-########### CHECKOUT #########
+########### REGISTER #########
 
 if (strpos($route, '/register') !== false){
-    
-
+    //every value for registration needs a value
     if((isset($_POST['username']) && $_POST['username'] !== NULL) &&
     (isset($_POST['first_name']) && $_POST['first_name'] !== NULL) &&
     (isset($_POST['last_name']) && $_POST['last_name'] !== NULL) &&
@@ -288,47 +287,63 @@ if (strpos($route, '/register') !== false){
     (isset($_POST['emailRepeat']) && $_POST['emailRepeat'] !== NULL) &&
     (isset($_POST['password']) && $_POST['password'] !== NULL) &&
     (isset($_POST['confirm_password']) && $_POST['confirm_password'] !== NULL)){
+        //replace not allowed characters for the names
         $username = preg_replace('/[^a-zA-Z0-9ßäöüÄÖÜ]/u', '', $_POST['username']);
         $first_name = preg_replace('/[^a-zA-Z0-9ßäöüÄÖÜ ]/u', '', $_POST['first_name']);
         $last_name = preg_replace('/[^a-zA-Z0-9ßäöüÄÖÜ ]/u', '', $_POST['last_name']);
         $email = $_POST['email'];
         $emailRepeat = $_POST['emailRepeat'];
+        //checks if the passwort contains not allowed characters
         $password = checkPassword($_POST['password']);
         $passwordConfirm = checkPassword($_POST['confirm_password']);
+        //checks if email has the format of a email
         if (filter_var($email, FILTER_VALIDATE_EMAIL) && filter_var($emailRepeat, FILTER_VALIDATE_EMAIL)) {
+            //checks if both emails and boths passwords are equal
             if($email == $emailRepeat){
                 if($password == $passwordConfirm){
+                    //checks if password contains illegal chars (from checkPassword-Method)
                     if($password !== false){
+                        //checks if the email or username is already taken
                         if(!userOrEmailTaken($username, $email)){
                             echo("<div class='alert alert-success text-center' role='alert'>
                             Deine Registrierung war erfolgreich, du erhälst eine Email zum bestätigen danach kannst du dich einloggen!
                             </div>");
                             $insertSuccessfull = insertNewUser($username, $password, $email, $first_name, $last_name);
+                            //if insertion of user was successfull login the user
                             if($insertSuccessfull){
-                                //login user
-                                //header zu profil
+                                login($username, $password);
+                                //same as for the "/login" route
+                                changeCartToSessionUser();
+                                $redirectTarget = $baseurl.'index.php/account';
+                                header("Location: " . $redirectTarget);
+                                exit();
                             }
                         }else{
+                            //username or email already taken
                             echo("<div class='alert alert-danger text-center' role='alert'>
                             Der Username oder die Email ist bereits vohanden!
                             </div>");
                         }
                     }else{
+                        //password has illegal chars
                         echo("<div class='alert alert-danger text-center' role='alert'>
                         Es sind nicht erlaubt Zeichen im Passwort vorhanden!
                         </div>");
                     }
                 }else{
+                    //passwords not equal
                     echo("<div class='alert alert-danger text-center' role='alert'>
                     Dein Passwort stimmt nicht überein!
                     </div>");
                 }
             }else{
+                //emails not equal
                 echo("<div class='alert alert-danger text-center' role='alert'>
                 Deine Email stimmt nicht überein!
                 </div>");
             }
         }else{
+            //illegal email format
             echo("<div class='alert alert-danger text-center' role='alert'>
                 Das ist kein gültige Email!
                 </div>");

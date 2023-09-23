@@ -1,13 +1,13 @@
 <?php
 if(strpos($route, '/register/code') !== false){
             
-    // falls vor .../index.php noch was steht
+    //get the register code from the route
     $explod_array = explode('/register/code',$route);
     $route = '/register/code'.$explod_array[1];
-
     $routeParts = explode('/',$route);
     $registerCode = $routeParts[3];
 
+    //checks if the user registered and isnt approved
     if(confirmUserWithRegisterCode($registerCode)){
         echo("<div class='alert alert-success text-center' role='alert'>
                             Bestätigung erfolgreich!

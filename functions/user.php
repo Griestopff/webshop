@@ -40,7 +40,7 @@ function insertNewUser($username, $password, $email, $first_name, $last_name){
     #$sql = 'INSERT INTO user SET user_name="'.$username.'", password="'.$password.'", email="'.$email.'", first_name="'.$first_name.'", last_name="'.$last_name.'", registercode="'.$registercode.'", approved="'.$approved.'"';
 
     try {
-        // Insert in table
+        // Insert user in table
         $sql = 'INSERT INTO user SET user_name = :username, password = :password, email = :email, first_name = :first_name, last_name = :last_name, registercode = :registercode, approved = :approved';
         $stmt = getDB()->prepare($sql);
         $stmt->execute([
@@ -53,8 +53,11 @@ function insertNewUser($username, $password, $email, $first_name, $last_name){
           ':approved'=>$approved
         ]);
 
+        //TODO
+        #insertBillingAddress()
+
         //TODO baseurl hinzufügen
-        $link = '<a href="https://shxrt.de/index.php/register/code/'.$registercode.'">Anmeldung best&#228;tigen</a>';
+        $link = '<a href="http://shxrt.de/index.php/register/code/'.$registercode.'">Anmeldung best&#228;tigen</a>';
        
         create_email("Rufen folgenden Link auf um deine Email zu best&#228;tigen:", $link, $email, NULL, "Email bestaetigen");
         
@@ -94,7 +97,24 @@ function login($user, $password):bool{
     //has to be exact one column with these credentials, then sets session value for userId (login)
     }elseif(count($userData) == 1){
         if(password_verify($password, $userData[0]["password"])){
+            //set session variable for user
             $_SESSION['userId'] = strval($userData[0]['user_id']);
+            //after registration user has no billing address column, but need one
+            if(!UserHasBillingAddress($userData[0]['user_id'])){
+                // Insert billing_address column in table
+                try {
+                    $sql = 'INSERT INTO billing_address SET user_id = :userid;';
+                    $stmt = getDB()->prepare($sql);
+                    $stmt->execute([
+                    ':userid'=>$userData[0]['user_id']
+                    ]);                
+                }catch(PDOException $e) {
+                    // Handle any errors that occur during the insertion e.g. duplicate
+                    // echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
+                    return false;
+                }
+            }
+            //successfull login
             return true;
         }else{
             return false;

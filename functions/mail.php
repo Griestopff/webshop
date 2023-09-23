@@ -8,9 +8,11 @@ require 'PHPMailer/src/SMTP.php';
 
 function create_email($head, $content, $to, $bcc, $subject){
   require CONFIG_DIR.'/mail_config.php';
+  //build the message
   $message = $head."<br>".$content;
 
   try {
+    //set email connection
     $mail = new PHPMailer(true);
     $mail->isSMTP();
     $mail->SMTPAuth   = true;
@@ -20,14 +22,19 @@ function create_email($head, $content, $to, $bcc, $subject){
     $mail->Port       = MAIL_PORT;
     $mail->Username   = MAIL_USER;
     $mail->Password   = MAIL_PASSWORD;
+    //set sender
     $mail->SetFrom(MAIL_USER, MAIL_DISPLAY_NAME);
-    $mail->AddAddress($to);	#wohin
+    //set receiver and cc
+    $mail->AddAddress($to);	
     if($bcc != null){
       $mail->AddBCC ($bcc, 'Example.com Sales Dep.');
     }
-    $mail->Subject    = $subject;
+    //set the subject and the content (message)
+    $mail->Subject = $subject;
     $mail->MsgHTML($message);
+    //set if email use html format
     $mail->isHTML(true);
+    //optional set html body with alternative plain text if html cant load
     #$mail->Body    = 'This is the HTML message body <b>in bold!</b>, when using ->isHTML(true)';
     #$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
     $mail->Send();

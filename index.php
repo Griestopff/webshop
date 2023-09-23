@@ -18,7 +18,6 @@
     
     // set cookie for 30 days (get $userId from routes.php, included by includes.php)
     setcookie('userId', getCurrentCookieUserId(), strtotime('+30 days'));
-
     
     include('content.php');
     #session_write_close();
