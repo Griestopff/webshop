@@ -16,7 +16,7 @@
 
     // get functions and route scripts
     require_once __DIR__.'/includes.php';
-    createPDF();
+    
     // set cookie for 30 days (get $userId from routes.php, included by includes.php)
     setcookie('userId', getCurrentCookieUserId(), strtotime('+30 days'));
     
