@@ -600,3 +600,117 @@ function confirmUserWithRegisterCode($registerCode):bool{
         return false;
     }
 }
+
+function checkEmail($email):bool{
+    $sql = 'SELECT COUNT(user_id) AS email_count FROM user WHERE email = "'.$email.'";';
+    $result = getDB()->query($sql);
+    // false if connection error to DB
+    if($result === false){
+        return false;
+    }
+    //get the email as array, where every index is a column(should be one)
+    $count = $result->fetch();
+    if($count['email_count'] == 1){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function insertResetCode($email, $resetCode):bool{
+    $sql = 'SELECT user_id FROM user WHERE email = "'.$email.'";';
+    $result = getDB()->query($sql);
+    // false if connection error to DB
+    if($result === false){
+        return false;
+    }
+    //get the user data as array, where every index is a column
+    $userData = [];
+    while ($row = $result->fetch()) {
+        $userData[] = $row;
+    }
+    $userId = $userData[0]['user_id'];
+
+
+    try {    
+        // SQL Prepared Statement
+        $sql = "INSERT INTO reset_password (user_id, reset_code)
+        VALUES (:userid, :resetcode)
+        ON DUPLICATE KEY UPDATE reset_code = :resetcode;";
+
+        // Prepared Statement
+        $stmt = getDB()->prepare($sql);
+        $stmt->execute([
+            ':userid'=>$userId,
+            ':resetcode'=>$resetCode
+        ]);
+
+        return true;
+    
+    } catch (PDOException $e) {
+        // Handle any errors that occur during the update
+        echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
+        return false;
+    }
+
+}
+
+function userHasResetCode($resetCode):bool{
+    $sql = 'SELECT COUNT(user_id) AS column_count FROM reset_password WHERE reset_code = '.$resetCode.';';
+    $result = getDB()->query($sql);
+    // false if connection error to DB
+    if($result === false){
+        return false;
+    }
+    //get the email as array, where every index is a column(should be one)
+    $count = $result->fetch();
+    if($count['column_count'] == 1){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function getUserIdByResetCode($resetCode){
+    $sql = 'SELECT user_id FROM reset_password WHERE reset_code = '.$resetCode.';';
+    $result = getDB()->query($sql);
+    // false if connection error to DB
+    if($result === false){
+        return false;
+    }
+    //get the billing address as array, where every index is a column(should be one)
+    $columns = [];
+    while ($row = $result->fetch()) {
+        $columns[] = $row;
+    }
+
+    return $columns[0]['user_id'];
+}
+
+function updateUserPassword($userId, $password):bool{
+    try {    
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        // SQL Prepared Statement
+        $sql = "UPDATE user SET password = :password WHERE user_id = :userid;";
+        // Prepared Statement
+        $stmt = getDB()->prepare($sql);
+        $stmt->execute([
+            ':userid'=>$userId,
+            ':password'=>$password_hash
+        ]);
+
+        // Remove the resetcode 
+        $sql = "DELETE FROM reset_password WHERE user_id = :userId;";
+        $stmt = getDB()->prepare($sql);
+        $stmt->execute([
+          ':userId'=>$userId
+        ]);
+
+        return true;
+    
+    } catch (PDOException $e) {
+        // Handle any errors that occur during the update
+         echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
+        return false;
+    }
+}

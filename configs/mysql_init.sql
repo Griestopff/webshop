@@ -222,6 +222,31 @@ INSERT INTO `product` VALUES (1,'Best Shirt','[\"blue\", \"red\", \"green\"]','[
 UNLOCK TABLES;
 
 --
+-- Table structure for table `reset_password`
+--
+
+DROP TABLE IF EXISTS `reset_password`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reset_password` (
+  `user_id` int(11) NOT NULL,
+  `reset_code` int(11) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_id` (`user_id`),
+  CONSTRAINT `reset_password_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reset_password`
+--
+
+LOCK TABLES `reset_password` WRITE;
+/*!40000 ALTER TABLE `reset_password` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reset_password` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `shipping_address`
 --
 

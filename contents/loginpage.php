@@ -17,8 +17,8 @@
           <label class="form-check-label" for="rememberMe">Angemeldet bleiben</label>
         </div>
         <button type="submit" class="btn btn-primary">Einloggen</button><br>
-        <a href="forgot-password.php" class="btn btn-link">Passwort vergessen?</a>
-        <a href="forgot-password.php" class="btn btn-link">Registrieren</a>
+        <?php echo('<a href="'.$baseurl.'index.php/resetpassword" class="btn btn-link">Passwort vergessen?</a>');?>
+        <?php echo('<a href="'.$baseurl.'index.php/register" class="btn btn-link">Registrieren</a>');?>
       </form>
     </div>
   </div>
