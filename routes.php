@@ -157,6 +157,57 @@ if (strpos($route, '/wishlist/remove') !== false){
     exit();
 }
 
+########### PROFIL ###########
+
+if (strpos($route, '/account') !== false){
+    if(isset($_POST['userDelete']) && isset($_POST['userDeleteCode']) && isset($_POST['userEmail'])
+        && $_POST['userDeleteCode'] !== NULL && $_POST['userDeleteCode'] !== ''
+        && $_POST['userEmail'] !== NULL && $_POST['userEmail'] !== ''){
+            //TODO baseurl hinzufügen
+            $link = '<a href="http://shxrt.de/index.php/account/deleteUser">Link</a>';
+            //insert the deltecode with userid
+            if(insertDeleteCode($userId, $_POST['userDeleteCode'])){
+                create_email("Rufen folgenden Link auf und gebe deinen Code: ".$_POST['userDeleteCode']." ein um deinen Account zu löschen:", $link, $_POST['userEmail'], NULL, "Account loeschen");
+                echo("<div class='alert alert-success text-center' role='alert'>
+                        Du hast eine Email erhalten.
+                        </div>");
+            }else{
+                echo("<div class='alert alert-danger text-center' role='alert'>
+                Es ist ein Fehler aufgetreten!
+                </div>");
+            }
+            
+    }
+}
+if (strpos($route, '/account/deleteUser') !== false){
+    if(isset($_POST['delete']) && isset($_POST['deleteCode']) && isset($_POST['password'])
+    && $_POST['deleteCode'] !== NULL && $_POST['deleteCode'] !== ''
+    && $_POST['password'] !== NULL && $_POST['password'] !== ''){
+        //TODO
+        $userData = getUserDataById($userId);
+        //authentification with password
+        if(password_verify($_POST['password'], $userData["password"])){
+            if(userHasDeleteCode($userId, $_POST['deleteCode'])){
+                    deleteUserById($userId);
+                    logout();
+                    $redirect = $baseurl.'index.php/login';
+                    header("Location: $redirect");
+                    exit();
+            }else{
+                //no column with delete code and userId
+                echo("<div class='alert alert-danger text-center' role='alert'>
+                Der Account wurde nicht zum löschen freigegeben!
+                </div>");
+            }
+        }else{
+            //incorrect password
+            echo("<div class='alert alert-danger text-center' role='alert'>
+                Dein Passwort ist ungültig!
+                </div>");
+        }
+    }
+}
+
 ########### ADDRESSES #########
 
 if (strpos($route, '/account/addresses/edit') !== false){

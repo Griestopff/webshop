@@ -304,6 +304,32 @@ INSERT INTO `shipping_method` VALUES (1,5,'Standard Shipping'),(2,10,'Fast Shipp
 UNLOCK TABLES;
 
 --
+-- Table structure for table `delete_user`
+--
+
+DROP TABLE IF EXISTS `delete_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `delete_user` (
+  `user_id` int(11) NOT NULL,
+  `delete_code` int(11) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_id` (`user_id`),
+  CONSTRAINT `delete_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `delete_user`
+--
+
+LOCK TABLES `delete_user` WRITE;
+/*!40000 ALTER TABLE `delete_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `delete_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
 -- Table structure for table `tmp_order_item`
 --
 

@@ -53,9 +53,6 @@ function insertNewUser($username, $password, $email, $first_name, $last_name){
           ':approved'=>$approved
         ]);
 
-        //TODO
-        #insertBillingAddress()
-
         //TODO baseurl hinzufügen
         $link = '<a href="http://shxrt.de/index.php/register/code/'.$registercode.'">Anmeldung best&#228;tigen</a>';
        
@@ -179,7 +176,7 @@ function getUserNameByID($userId){
 }
 
 function getUserDataById($userId){
-    $sql = 'SELECT user_name, email, first_name, last_name, registercode FROM user WHERE user_id="'.$userId.'"';
+    $sql = 'SELECT user_name, email, first_name, last_name, registercode, password FROM user WHERE user_id="'.$userId.'"';
     $result = getDB()->query($sql);
     // false if connection error to DB
     if($result === false){
@@ -649,7 +646,7 @@ function insertResetCode($email, $resetCode):bool{
     
     } catch (PDOException $e) {
         // Handle any errors that occur during the update
-        echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
+        // echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
         return false;
     }
 
@@ -713,4 +710,59 @@ function updateUserPassword($userId, $password):bool{
          echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
         return false;
     }
+}
+
+function userHasDeleteCode($userId, $deleteCode):bool{
+    $sql = 'SELECT COUNT(user_id) AS column_count FROM delete_user WHERE delete_code = '.$deleteCode.' AND user_id = '.$userId.';';
+    $result = getDB()->query($sql);
+    // false if connection error to DB
+    if($result === false){
+        return false;
+    }
+    //get the email as array, where every index is a column(should be one)
+    $count = $result->fetch();
+    if($count['column_count'] == 1){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function deleteUserById($userId){
+    try {
+        // Remove the user
+        $sql = "DELETE FROM user WHERE user_id = :userId";
+        $stmt = getDB()->prepare($sql);
+        $stmt->execute([
+          ':userId'=>$userId
+        ]);
+      } catch(PDOException $e) {
+        // Handle any errors that occur during the insertion e.g. duplicate
+        // echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
+
+    }
+}
+
+function insertDeleteCode($userId, $deleteCode):bool{
+    try {    
+        // SQL Prepared Statement
+        $sql = "INSERT INTO delete_user (user_id, delete_code)
+        VALUES (:userid, :deletecode)
+        ON DUPLICATE KEY UPDATE delete_code = :deletecode;";
+
+        // Prepared Statement
+        $stmt = getDB()->prepare($sql);
+        $stmt->execute([
+            ':userid'=>$userId,
+            ':deletecode'=>$deleteCode
+        ]);
+
+        return true;
+    
+    } catch (PDOException $e) {
+        // Handle any errors that occur during the update
+        //echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
+        return false;
+    }
+
 }

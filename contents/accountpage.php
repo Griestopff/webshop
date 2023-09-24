@@ -19,6 +19,9 @@
         }elseif(strpos($route, '/account/wishlist') !== false){
             include(__DIR__."/account_contents/account_wishlist.php");
         // Check if the route contains '/cart'
+        }elseif(strpos($route, '/account/deleteUser') !== false){
+            include(__DIR__."/account_contents/account_delete.php");
+        // Check if the route contains '/cart'
         }else{
             include(__DIR__."/account_contents/account_user.php");
         }

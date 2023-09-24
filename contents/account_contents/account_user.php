@@ -5,7 +5,7 @@
         $link = '<a href="https://shxrt.de/index.php/register/code/'.$userData['registercode'].'">Anmeldung best&#228;tigen</a>';
         create_email("Rufen folgenden Link auf um deine Email zu best&#228;tigen:", $link, $userData['email'], NULL, "Email bestaetigen");
     }
-
+#TODO delete user
 ?>
 <div class="card">
                     <div class="card-header">
@@ -45,7 +45,12 @@
                                 <!-- Kleinere Card 1 -->
                                 <div class="card">
                                     <div class="card-body">
-                                        Inhalt der ersten kleinen Card
+                                    <form method="post">
+                                        <?php $userDeleteCode = rand(0,100000);?>
+                                        <input type="hidden" name="userDeleteCode" value="<?php echo($userDeleteCode);?>">
+                                        <input type="hidden" name="userEmail" value="<?php echo($userData['email']);?>">
+                                        <button type="userDelete" name="userDelete" class="btn btn-primary">Account löschen</button>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
