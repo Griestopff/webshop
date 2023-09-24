@@ -1,10 +1,10 @@
 <?php
 if(strpos($route, '/resetpassword/code') !== false){            
     //get the register code from the route
-    $explod_array = explode('/resetpassword/code',$route);
-    $route = '/resetpassword/code'.$explod_array[1];
-    $routeParts = explode('/',$route);
-    $resetCode = $routeParts[3];
+    #$explod_array = explode('/resetpassword/code',$route);
+    #$route = '/resetpassword/code'.$explod_array[1];
+    #$routeParts = explode('/',$route);
+    #$resetCode = $routeParts[3];
 
     if(isset($_POST['submit'])){
         //checks if the passwort contains not allowed characters
@@ -77,7 +77,7 @@ if(strpos($route, '/resetpassword/code') !== false){
                 //checks if insert was correct
                 if(insertResetCode($_POST['email'], $randomCode)){
                     //TODO
-                    $link = 'Dein Code ist '.$randomCode.' <a href="http://shxrt.de/index.php/resetpassword/code'.$randomCode.'">Passwort Reset</a>';
+                    $link = 'Dein Code ist '.$randomCode.' <a href="http://shxrt.de/index.php/resetpassword/code">Passwort Reset</a>';
                     create_email("Rufen Sie folgenden Link auf um dein Password zu setzen:", $link, $_POST['email'], NULL, "Passwort Reset");
                     echo("<div class='alert alert-success text-center' role='alert'>
                         Du hast eine Email erhalten!
