@@ -165,8 +165,9 @@ if (strpos($route, '/account') !== false){
         && $_POST['userEmail'] !== NULL && $_POST['userEmail'] !== ''){
             //TODO baseurl hinzufügen
             $link = '<a href="http://shxrt.de/index.php/account/deleteUser">Link</a>';
-            //insert the deltecode with userid
+            //insert the delte code with userid
             if(insertDeleteCode($userId, $_POST['userDeleteCode'])){
+                //send email with the delete code and link to the form
                 create_email("Rufen folgenden Link auf und gebe deinen Code: ".$_POST['userDeleteCode']." ein um deinen Account zu löschen:", $link, $_POST['userEmail'], NULL, "Account loeschen");
                 echo("<div class='alert alert-success text-center' role='alert'>
                         Du hast eine Email erhalten.
