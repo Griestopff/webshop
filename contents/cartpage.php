@@ -25,6 +25,7 @@ if(isset($_GET['cartItem'])){
 <div id="banner">
      Warenkorb
 </div>
+<div class="container">
 <section id="cartItems">
     <?php 
         $cartItems = getCartItemsForUserId($userId);
@@ -32,8 +33,14 @@ if(isset($_GET['cartItem'])){
         foreach($cartItems as $cartItem){
             include("./templates/cartItem.php");
         }
+        if(count($cartItems) < 1){
+            echo("<div class='alert alert-warning text-center' role='alert'>
+            Du hast keine Produkte in deinem Warenkorb.
+                              </div>");
+          }
     ?>
 </section>
+        </div>
 <hr>
 <div class="container">
         <div class="row">

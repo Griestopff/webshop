@@ -16,9 +16,9 @@ $productSizesAndColors = cartItemsToProductSizesColors($cartItem[0])
     <div>
       <h3> <?php echo($cartItem[2]);?></h3>
       <form>
-        <label>Größe: <?php echo($cartItem[4]." ");?></label>
-        <label>Farbe: <?php echo($cartItem[5]." ");?></label>
-        <label>Anzahl: <?php echo($cartItem[6]." ");?></label>
+      <button type="button" class="btn btn-outline-secondary"><label>Größe: <?php echo($cartItem[4]." ");?></label></button>
+      <button type="button" class="btn btn-outline-secondary"><label>Farbe: <?php echo($cartItem[5]." ");?></label></button>
+      <button type="button" class="btn btn-outline-secondary"><label>Anzahl: <?php echo($cartItem[6]." ");?></label></button>
       </form>
     </div>
   </div>

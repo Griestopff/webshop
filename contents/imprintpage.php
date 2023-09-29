@@ -1,6 +1,11 @@
-
+<br>
   <div class="container">
     <div class="row">
+     
+    <div class='alert alert-danger text-center' role='alert'>
+    <b>Disclaimer: Dieser Webshop ist nur zu Demonstrationszwecken</b><br>
+
+Bitte beachten Sie, dass dieser Webshop ausschließlich zu Demonstrationszwecken erstellt wurde. Alle Produkte, Preise und Transaktionen in diesem Webshop sind nicht echt und dienen lediglich der Illustration und Übung. Es werden keine tatsächlichen Verkäufe oder Lieferungen getätigt. Wenn Sie Fragen oder Anmerkungen haben, können Sie sich gerne an uns wenden, aber bitte beachten Sie, dass wir keine tatsächlichen Waren oder Dienstleistungen anbieten.                              </div>
       <div class="col-md-8 mx-auto">
         <h1 class="text-center mb-4">Impressum</h1>
         <p>Unternehmen XYZ GmbH<br>

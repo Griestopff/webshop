@@ -16,7 +16,9 @@
           <input type="checkbox" class="form-check-input" id="rememberMe">
           <label class="form-check-label" for="rememberMe">Angemeldet bleiben</label>
         </div>
-        <button type="submit" class="btn btn-primary">Einloggen</button><br>
+        <div class="row" style="margin:0px">
+          <button type="submit" class="btn btn-warning">Einloggen</button><br>
+        </div>
         <?php echo('<a href="'.$baseurl.'index.php/resetpassword" class="btn btn-link">Passwort vergessen?</a>');?>
         <?php echo('<a href="'.$baseurl.'index.php/register" class="btn btn-link">Registrieren</a>');?>
       </form>

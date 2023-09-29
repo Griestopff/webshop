@@ -6,6 +6,8 @@
     <div class="card">
         <div class="card-body">
             <ul class="list-group">
+            <img src="<?php echo('/img/'.$orderItem['product_id'].'_1.png'); ?>" class="card-img-top" alt=<?php echo($product['product_name']);?>>
+
                 <li class="list-group-item">
                     <strong>Produkt:</strong> <?php echo($product['product_name']);?>
                 </li>

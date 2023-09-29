@@ -2,7 +2,7 @@
   <footer>
       <div>
         <h3>Kontakt</h3>
-        <p>Telefon: 1234567</p>
+        <p>Telefon: +49 15752833852</p>
         <p>E-Mail: info@shxrt.de</p>
       </div>
       <div>

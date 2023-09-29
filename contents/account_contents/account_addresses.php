@@ -1,9 +1,10 @@
 <?php
     $billingAddress = getBillingAddressByUserId($userId);
-
+    $userData = getUserDataById($userId);
     if (strpos($route, '/account/addresses/edit') !== false){
         if (strpos($route, '/account/addresses/edit/billing') !== false){
 ?>
+
 <form method="post">
     <div class="card">
         <div class="card-header">
@@ -50,7 +51,7 @@
             if(UserHasShippingAddress($userId)){
                 $shippingAddress = getShippingAddressByUserId($userId);
 ?>
-<br>
+
 <form method="post">
     <div class="card">
         <div class="card-header">
@@ -97,7 +98,8 @@
         }
     }else{
 ?>
-<br>
+
+<div class="col">
 <div class="card">
     <div class="card-header">
         <h5>Rechnungsaddresse
@@ -114,6 +116,9 @@
     </div>
     <div class="card-body">
         <ul class="list-group">
+            <li class="list-group-item">
+                <strong>Person:</strong> <?php echo($userData['first_name']." ".$userData['last_name']); ?>
+            </li>
             <li class="list-group-item">
                 <strong>Ort:</strong> <?php echo($billingAddress['location']); ?>
             </li>
@@ -136,7 +141,9 @@
         if(UserHasShippingAddress($userId)){
             $shippingAddress = getShippingAddressByUserId($userId);
 ?>
-<br>
+
+        </div>
+        <div class="col">
 <div class="card">
     <div class="card-header">
         <h5>Lieferaddresse
@@ -175,7 +182,7 @@
         }
     }
 ?>
-<br>
+</div>
 
 <!--
     The regular expression `^[a-zA-Z0-9\säöüßÄÖÜ.,]+$` has the following meaning:

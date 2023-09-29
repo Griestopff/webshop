@@ -11,7 +11,7 @@
   border: 1px solid lightgray; 
   border-radius:10px;
   padding: 5px; 
-  margin: 10px; 
+  margin-top: 10px; 
   display: flex; 
   justify-content: space-between; 
   align-items: center;
@@ -108,4 +108,28 @@ input[type="range"]::-moz-range-thumb {
   border: none; /* Kein Rand um den Daumen */
   border-radius: 50%; /* Runde Form für den Daumen */
   cursor: pointer; /* Zeiger-Cursor beim Überfahren des Daumens */
+}
+
+/* Ändere die Farbe des Fokus-Stils für Bootstrap-Elemente */
+.btn:focus,
+.input:focus,
+.custom-select:focus,
+.form-control:focus {
+  box-shadow: 0 0 5px 2px #fd7e14; /* Ändere die Farbe auf Rot */
+  /* Weitere Anpassungen, falls gewünscht */
+}
+
+/* Entfernen des Schatten-Effekts beim Klicken auf den Range-Balken */
+.form-range::-webkit-slider-thumb:active {
+  background-color: #fd7e14;
+}
+.form-range::-moz-range-thumb:active {
+  background-color: #fd7e14;
+}
+
+.form-range:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem #fd7e14;
+}
+.form-range:focus::-moz-range-thumb {
+  box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem #fd7e14;
 }

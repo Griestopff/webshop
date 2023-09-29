@@ -27,8 +27,6 @@
           <img src="/styles/svg/shxrt.svg" width="30" height="30" alt="">
           <b>SHXRT</b>
         </a>
-         <!-- Toggler/collapsibe Button
-        #TODO collapse klappt nicht -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>

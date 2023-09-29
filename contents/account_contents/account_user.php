@@ -49,31 +49,12 @@
                                         <?php $userDeleteCode = rand(0,100000);?>
                                         <input type="hidden" name="userDeleteCode" value="<?php echo($userDeleteCode);?>">
                                         <input type="hidden" name="userEmail" value="<?php echo($userData['email']);?>">
-                                        <button type="userDelete" name="userDelete" class="btn btn-primary">Account löschen</button>
+                                        <button type="userDelete" name="userDelete" class="btn btn-warning">Account löschen</button>
                                     </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <!-- Kleinere Card 2 -->
-                                <div class="card">
-                                    <div class="card-body">
-                                        Inhalt der zweiten kleinen Card
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <!-- Kleinere Card 3 -->
-                                <div class="card">
-                                    <div class="card-body">
-                                        Inhalt der dritten kleinen Card
-                                    </div>
-                                </div>
-                            </div>
                             <!-- weitere cards -->
-                            <?php
-                            #foreach
-                            ?>
                         </div>
                     </div>
                 </div>
