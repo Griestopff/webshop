@@ -7,7 +7,7 @@
 </div>
 
 <!--defines a responsive layout via Bootstraps row class to place the cards of the products-->
-
+<br>
 <div class="container">
   <div class="row justify-content-center">
 

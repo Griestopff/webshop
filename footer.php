@@ -3,7 +3,7 @@
       <div>
         <h3>Kontakt</h3>
         <p>Telefon: 1234567</p>
-        <p>E-Mail: info@meinshop2.com</p>
+        <p>E-Mail: info@shxrt.de</p>
       </div>
       <div>
         <h3>Links</h3>

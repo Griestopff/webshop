@@ -1,3 +1,8 @@
+<!--#TODO auslagern in style.css-->
+<style>
+
+</style>
+
 <?php
 checkWishlistCookie();
 
@@ -12,6 +17,7 @@ if(isset( $_GET["category"] ) && isset($_GET["maxPrice"])){
 }
 
 ?>
+
 <div class="container mt-5">
     <div class="row">
       <div class="col-md-3">
@@ -67,10 +73,11 @@ if(isset( $_GET["category"] ) && isset($_GET["maxPrice"])){
               priceDisplay.textContent = this.value;
             });
         </script>
-         
-        <input type="submit" class="btn btn-primary" value="Filter anwenden">
-      
+         <div class="row" style="margin:0px">
+        <button type="submit" class="btn btn-warning" value="Filter anwenden">Filter anwenden</button>
+          </div>
       </div>
+      
       </form>
       <div class="col-md-9">
         <h3>Produkte</h3>
@@ -81,11 +88,16 @@ if(isset( $_GET["category"] ) && isset($_GET["maxPrice"])){
           foreach ($products as $product) {
             include('./templates/card_search.php');
           }
+          if(count($products) < 1){
+            echo("<div class='alert alert-warning text-center' role='alert'>
+            Leider ergab dein Filter keine Ergebnisse.
+                              </div>");
+          }
           ?>
         
         </div>
       </div>
     </div>
   </div>
-
+  
 

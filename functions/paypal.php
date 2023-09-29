@@ -263,6 +263,7 @@ function capturePayment(string $accessToken, string $orderId, string $token){
     //change response to PHP-Array (without true would be stdClass Object)
     $data = json_decode($result,true);
 
+    //TODO wenn aktualisiert -> reponse von paypal hat keine ['status'] mehr
     //return the status of the payment - should be 'COMPLETED'
     return $data['status'];
 }

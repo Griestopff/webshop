@@ -91,7 +91,7 @@ function fillFormWithJsonOptionsCart($selectName, $jsonField, $selected) {
   $data = json_decode($jsonField, true);
   
   // Generate the HTML for the select field with options from the JSON data
-  $html = "<select name=\"$selectName\">";
+  $html = '<select name="'.$selectName.'" class="form-control">\n';
   // if no color or size in cart selected
   if ($selected == NULL){
     $value = "";

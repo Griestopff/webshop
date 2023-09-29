@@ -1,48 +1,3 @@
-<!--#TODO auslagern in styles.css war nicht möglich--> 
-<style>
-  /*Slideshow for productsimages */
-.slideshow-container{
-  position: relative;
-  max-width: 500px;
-  margin: auto;
-}
-
-.slideshow-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto; /* Zentriert das Bild horizontal */
-}
-
-.prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    
-}
-
-.prev {
-    left: 10px;
-}
-
-.next {
-    right: 10px;
-}
-
-.prev:hover, .next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-</style>
-
 <?php
     $parts = explode("/", $route);
     //$parts[0]='', $parts[1]='product', $parts[2]=product_id
@@ -57,66 +12,99 @@
     // $matchingFiles enthält jetzt ein Array mit den Dateien, die den gewünschten Präfix haben
 
 ?>
-
+<br>
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <div class="slideshow-container">
+      <div class="slideshow-container unselectable">
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
         <?php
         foreach($matchingFiles as $file){
-          echo('<img src="'.$file.'" alt="Product Image" class="img-fluid slideshow-img">');
+          echo('<img src="'.$file.'" alt="Product Image" class="img-fluid slideshow-img shxrt-img">');
         }
         ?>
         <a class="next" onclick="plusSlides(1)">&#10095;</a>
       </div>
     </div>
     <div class="col-md-6">
-      <h2><?php  echo($product['product_name']);?></h2>
-      <p class="lead">Price: <?php  echo($product['price']);?>€</p>
+      <h2>
+        <b><?php  echo($product['product_name']);?></b>
+        <?php 
+          include("./elements/wishlistButton.php");
+        ?>
+      </h2>
+      <p>
+        <span class="lead"><?php  echo($product['price']);?>€ </span>
+        <!--#TODO Versandinformationen page-->
+        <small style="opacity: 0.5;">inkl. MwSt. zzgl. Versandkosten</small>
+      </p>
+      <hr>
       <form action=<?php echo($baseurl."index.php/cart/add/".$product['product_id']."/")?>>
-      
         <div class="form-group">
-
           <label for="sizeSelect">Size:</label>
           <?php echo(fillFormWithJsonOptions("size", $product['sizes']));?>
-
         </div>
         <div class="form-group">
-
           <label for="colorSelect">Color:</label>
-          <?php echo(fillFormWithJsonOptions("color", $product['colors']));?>
-          
+          <?php echo(fillFormWithJsonOptions("color", $product['colors']));?>        
         </div>
-        <button type="submit" class="btn btn-primary">Add to Cart</button>
+        <br>
+        <div class="row" style="margin:0px">
+          <button type="submit" class="btn btn-warning">Zum Warenkorb</button>
+        </div>
       </form>
-      <?php 
-        include("./elements/wishlistButton.php");
-      ?>      
+      <br>
+      <div class="row" style="margin:0px">
+        <button type="button" class="btn btn-outline-secondary" style ="color:green">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+          </svg>
+          <small>Verfügbar, lieferbar 1-3 Werktage</small>
+        </button>
+      </div>
+      <br>
+      <div class="row" style="margin:0px">
+        <button type="button" class="btn btn-outline-secondary">
+          <small style="opacity: 0.5;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15" height="10">
+              <!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) -->
+              <path d="M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 152v72H48c-26.5 0-48 21.5-48 48v192c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V272c0-26.5-21.5-48-48-48zm-104 0H152v-72c0-39.7 32.3-72 72-72s72 32.3 72 72v72z"></path>
+            </svg> 
+            Sichere Online-Zahlung mit 
+            <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" width="38" height="24" role="img" aria-labelledby="pi-paypal">
+              <title id="pi-paypal">PayPal</title>
+              <path opacity=".07" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"></path>
+              <path fill="#fff" d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32"></path>
+              <path fill="#003087" d="M23.9 8.3c.2-1 0-1.7-.6-2.3-.6-.7-1.7-1-3.1-1h-4.1c-.3 0-.5.2-.6.5L14 15.6c0 .2.1.4.3.4H17l.4-3.4 1.8-2.2 4.7-2.1z"></path>
+              <path fill="#3086C8" d="M23.9 8.3l-.2.2c-.5 2.8-2.2 3.8-4.6 3.8H18c-.3 0-.5.2-.6.5l-.6 3.9-.2 1c0 .2.1.4.3.4H19c.3 0 .5-.2.5-.4v-.1l.4-2.4v-.1c0-.2.3-.4.5-.4h.3c2.1 0 3.7-.8 4.1-3.2.2-1 .1-1.8-.4-2.4-.1-.5-.3-.7-.5-.8z"></path>
+              <path fill="#012169" d="M23.3 8.1c-.1-.1-.2-.1-.3-.1-.1 0-.2 0-.3-.1-.3-.1-.7-.1-1.1-.1h-3c-.1 0-.2 0-.2.1-.2.1-.3.2-.3.4l-.7 4.4v.1c0-.3.3-.5.6-.5h1.3c2.5 0 4.1-1 4.6-3.8v-.2c-.1-.1-.3-.2-.5-.2h-.1z"></path>
+            </svg>
+          </small>
+        </button>
+      </div>
+      <br>
+      <br>
+      <p><?php echo($product['description']);?></p>
     </div>
-    <p><?php echo($product['description']);?></p>
   </div>
 </div>
 
 <!-- image slideshow -->
 <script>
-        let slideIndex = 1;
-
-        showSlides(slideIndex);
-
-        function plusSlides(n) {
-            showSlides(slideIndex += n);
-        }
-
-        function showSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("slideshow-img");
-            if (n > slides.length) { slideIndex = 1 }
-            if (n < 1) { slideIndex = slides.length }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            slides[slideIndex - 1].style.display = "block";
-        }
-    </script>
+  let slideIndex = 1;
+  showSlides(slideIndex);
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+  function showSlides(n) {
+    let i;
+    let slides = document.getElementsByClassName("slideshow-img");
+    if (n > slides.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = slides.length }
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    slides[slideIndex - 1].style.display = "block";
+  }
+</script>
 

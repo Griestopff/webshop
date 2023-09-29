@@ -141,10 +141,53 @@ function getTmpOrderIdByOrderCode($order_code) {
 
 //get the orderId of the temporary order of your currently working order by your random order_code
 function getOrderIdByOrderCode($order_code) {
-    $sql = "SELECT order_id FROM orders WHERE order_code = ".$order_code;
-    $result = getDB()->query($sql);
-    $orderId = $result->fetch();
+    $sql = "SELECT order_id FROM orders WHERE order_code = :ordercode ;";
+    //prepare the sql statement
+    $stmt = getDB()->prepare($sql);
+    $stmt->execute([
+        ':ordercode' => $order_code
+    ]);
+    $orderId = $stmt->fetch();
     return $orderId[0];
+ }
+
+ function getOrderDataById($orderId, $userId){
+    $sql = "SELECT shipping_address, paid, delivered, shipping_method FROM orders WHERE order_id = :orderid AND user_id = :userid ;";
+    //prepare the sql statement
+    $stmt = getDB()->prepare($sql);
+    $stmt->execute([
+        ':orderid' => $orderId,
+        ':userid'=> $userId
+    ]);
+        
+    // false if connection error to DB
+    if($stmt === false){
+        return false;
+    }
+    //get the user data as array, where every index is a column
+    $orderData = [];
+    while ($row = $stmt->fetch()) {
+        $orderData[] = $row;
+    }
+
+    return $orderData[0];
+ }
+
+ function getOrderItemsByOrderId($orderId){
+    $sql = "SELECT * FROM order_item WHERE order_id = ".$orderId.";";
+    $result = getDB()->query($sql);
+    
+    // false if connection error to DB
+    if($result === false){
+        return false;
+    }
+    //get the user data as array, where every index is a column
+    $orderItems = [];
+    while ($row = $result->fetch()) {
+        $orderItems[] = $row;
+    }
+
+    return $orderItems;
  }
 
 

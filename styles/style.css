@@ -1,6 +1,6 @@
 /* Stil für den Text im Banner */
 #banner {
-  background-color: #f1c40f;
+  background-color:  #ffc107;
   text-align: center;
   padding: 20px;
   font-size: 24px;
@@ -9,8 +9,11 @@
 
 .cartColumn{
   border: 1px solid lightgray; 
-  padding: 5px; margin: 10px; 
-  display: flex; justify-content: space-between; 
+  border-radius:10px;
+  padding: 5px; 
+  margin: 10px; 
+  display: flex; 
+  justify-content: space-between; 
   align-items: center;
 }
 
@@ -24,3 +27,85 @@ p .cartPrice{
   font-size: 18px;
 }
 
+ /*Slideshow for productsimages */
+ .slideshow-container{
+  position: relative;
+  max-width: 500px;
+  margin: auto;
+}
+
+.slideshow-img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Zentriert das Bild horizontal */
+}
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.shxrt-img{
+  border: 1px solid lightgray; 
+  border-radius:10px;
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Stil für den Bereich (Schienenteil) des Range-Elements */
+input[type="range"] {
+  width: 100%;
+  height: 0px;
+  background-color: #ccc; /* Hintergrundfarbe des Bereichs */
+  -webkit-appearance: none; /* WebKit: Standard-Styling deaktivieren */
+}
+
+/* Stil für den Punkt (Daumen) des Range-Elements */
+input[type="range"]::-webkit-slider-thumb {
+  background-color: #ffc107; /* Hintergrundfarbe des Daumens */
+  width: 20px; /* Breite des Daumens */
+  height: 20px; /* Höhe des Daumens */
+  border: none; /* Kein Rand um den Daumen */
+  border-radius: 50%; /* Runde Form für den Daumen */
+  cursor: pointer; /* Zeiger-Cursor beim Überfahren des Daumens */
+}
+
+/* Stil für den Punkt (Daumen) des Range-Elements in Firefox */
+input[type="range"]::-moz-range-thumb {
+  background-color: #ffc107; /* Hintergrundfarbe des Daumens --bs-warning*/
+  width: 20px; /* Breite des Daumens */
+  height: 20px; /* Höhe des Daumens */
+  border: none; /* Kein Rand um den Daumen */
+  border-radius: 50%; /* Runde Form für den Daumen */
+  cursor: pointer; /* Zeiger-Cursor beim Überfahren des Daumens */
+}

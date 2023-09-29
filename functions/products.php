@@ -50,7 +50,7 @@ function fillFormWithJsonOptions($selectName, $jsonField) {
     $data = json_decode($jsonField, true);
     
     // Generate the HTML for the select field with options from the JSON data
-    $html = "<select name=\"$selectName\" class=\"form-control\">\n";
+    $html = '<select name="'.$selectName.'" class="form-control">\n';
     foreach ($data as $value) {
         $html .= "<option value=\"$value\">$value</option>\n";
     }

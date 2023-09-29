@@ -310,7 +310,9 @@ if (strpos($route, '/checkout/paymentComplete') !== false){
         if(isset($_POST['token']) && isset($_POST['PayerID']) && isset($_SESSION['orderCode']) && $_SESSION['checkoutStatus'] == 'RUNNING'){
             //TODO check with internet if working
             if(paypalPaymentComplete($_POST['token'], $_POST['PayerID']) == 'COMPLETED') { 
-                 transformTmpOrderToOrder($userId, $_SESSION['orderCode']);
+                $orderCode = $_SESSION['orderCode'];
+                transformTmpOrderToOrder($userId, $orderCode);
+                createInvoice($userId, $orderCode);
                 $_SESSION['checkoutStatus'] = 'COMPLETE';
                 echo("<div class='alert alert-success' role='alert'>
                 Deine Bestellung war erfolgreich! Sieh sie dir <a href='".$baseurl."index.php/account/orders'>hier</a> an.
