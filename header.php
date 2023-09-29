@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Mein Shop</title>
+    <title>SHXRT</title>
     
     <link rel="stylesheet" href=<?php echo($baseurl."styles/bootstrap/css/bootstrap.css")?>>
     <link rel="stylesheet" href=<?php echo($baseurl."styles/style.css")?>>
