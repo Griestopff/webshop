@@ -2,6 +2,7 @@
 
 require 'TCPDF/tcpdf.php';
 
+//DEBUGGING test function
 function createPDF(){
 
 // PDF-Instanz erstellen
@@ -37,6 +38,7 @@ function createInvoice($userId, $order_code){
     $orderId = getOrderIdByOrderCode($order_code);
     $orderData = getOrderDataById($orderId, $userId);
     $orderItems = getOrderItemsByOrderId($orderId);
+    $shippingPrice = getOrderShippingPriceById($orderId);
     $userData = getUserDataById($userId);
     $date = date("d.m.Y - H:i");
     $address = explode(",", $orderData['shipping_address']);
@@ -99,10 +101,15 @@ foreach ($orderItems as $orderItem) {
 }
 $last_part = 
 '
+<tr>
+    <td></td><td></td>
+    <td style = "text-align:right;">Shipping</td>
+    <td style = "text-align:right;">'.number_format($shippingPrice, 2).'</td>
+</tr>
 <tr style = "font-weight: bold;">
     <td></td><td></td>
     <td style = "text-align:right;">Total (€)</td>
-    <td style = "text-align:right;">'.number_format($total, 2).'</td>
+    <td style = "text-align:right;">'.number_format($total+$shippingPrice, 2).'</td>
 </tr>
 </table></div>
 

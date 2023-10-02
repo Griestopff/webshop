@@ -80,13 +80,57 @@
     }
 ?>
     </div>
-    <br>
-<div class="row" style="margin:0px">
-        <button class="btn btn-warning"><a href="paymentSelection" style="text-decoration:none; color:black">Weiter zur Zahlungsmethode</a></button>
+    <hr>
+    <form method="post">
+        
+            <div class="row">
+                <p>Wähle bitte eine Versandart.</p>
+                <div class="col-md-6">
+                    <div class="card">
+                    <div class="card-header">
+                            <h5>Standard Versand</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <label for="standard">Standard (<?php echo(getShippingMethodPriceById(1)); ?>€) wählen </label>
+                                <input type="radio" name="shipping" value="1" id="standard" required>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        Mittlere Lieferzeit: <b>4-7 Werktage</b>*, innerhalb Deutschlands<br>
+                        <small style="opacity: 0.5;">*Die Lieferzeit umfasst den Eingang Ihrer Bestellung, die Produktion und die Lieferung an Ihren Kunden. Lieferzeiten und Versandkosten sind Schätzungen und können nicht garantiert werden. Die endgültigen Kosten und Lieferzeiten sehen Sie an der Kasse.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Express Versand</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <label for="express">Express (<?php echo(getShippingMethodPriceById(2)); ?>€) wählen</label>
+                                <input type="radio" name="shipping" value="2" id="express" required>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        Mittlere Lieferzeit: <b>3-6 Werktage</b>*, innerhalb Deutschlands<br>
+                        <small style="opacity: 0.5;">*Die Lieferzeit umfasst den Eingang Ihrer Bestellung, die Produktion und die Lieferung an Ihren Kunden. Lieferzeiten und Versandkosten sind Schätzungen und können nicht garantiert werden. Die endgültigen Kosten und Lieferzeiten sehen Sie an der Kasse.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row" style="margin:0px">
+            <button type="submit" class="btn btn-warning">Weiter zur Zahlungsmethode</button>
+        </div>
     </div>
-</div>
-</div>
 
+</form>
 <br>
 
 

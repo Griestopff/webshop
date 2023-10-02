@@ -1,5 +1,6 @@
 configs/mysql_config.php
 configs/paypal_config.php
 configs/mail_config.php
+configs/gelato_config.php
 webshop/install.txt
 data/invoice/

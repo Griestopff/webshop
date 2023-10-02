@@ -73,20 +73,18 @@ function createNewTmpOrder($userId, $shippingMethod){
 
 function transformTmpOrderToOrder($userId, $orderCode){
     //change to final order
-    //TODO
-    $shippingMethod = 1;
-    createOrder($userId, $shippingMethod, $orderCode);
+    createOrder($userId, $orderCode);
     deleteTmpOrders($userId);
     $_SESSION['orderCode'] = '';
     removeAllProductsFromCart($userId);
 }  
 
 //TODO nehme values von temp order
-function createOrder($userId, $shippingMethod, $orderCode){
+function createOrder($userId, $orderCode){
     try {  
         //shipping address string for orders table
         $shipping_address = userShippingAddressForOderToString($userId);
-        $shipping_method = $shippingMethod; 
+        $shipping_method = getShippingMethodIdFromTmpOrder($userId); 
         $insertOrderSQL = "INSERT INTO orders (user_id, shipping_address, paid, delivered, shipping_method, order_code) 
                 VALUES (:userId, :shipping_address, FALSE, FALSE, :shipping_method, :order_code)";
     
@@ -152,7 +150,7 @@ function getOrderIdByOrderCode($order_code) {
  }
 
  function getOrderDataById($orderId, $userId){
-    $sql = "SELECT shipping_address, paid, delivered, shipping_method FROM orders WHERE order_id = :orderid AND user_id = :userid ;";
+    $sql = "SELECT shipping_address, paid, delivered, shipping_method, order_code FROM orders WHERE order_id = :orderid AND user_id = :userid ;";
     //prepare the sql statement
     $stmt = getDB()->prepare($sql);
     $stmt->execute([
@@ -189,6 +187,44 @@ function getOrderIdByOrderCode($order_code) {
 
     return $orderItems;
  }
+
+ function getShippingMethodIdFromTmpOrder(int $userId){
+    $sql = "SELECT shipping_method FROM tmp_orders WHERE user_id = :userid ;";
+    //prepare the sql statement
+    $stmt = getDB()->prepare($sql);
+    $stmt->execute([
+        ':userid' => $userId
+    ]);
+    $shippingMethod = $stmt->fetch();
+    return $shippingMethod[0];
+ }
+
+
+ function getShippingMethodPriceById(int $shippingMethodId){
+    $sql = "SELECT price FROM shipping_method WHERE shipping_method_id = :shippingmethodid ;";
+    //prepare the sql statement
+    $stmt = getDB()->prepare($sql);
+    $stmt->execute([
+        ':shippingmethodid' => $shippingMethodId
+    ]);
+    $price = $stmt->fetch();
+    return $price[0];
+ }
+
+ function getOrderShippingPriceById(int $orderId){
+    $sql = 'SELECT shipping_method.price
+    FROM shipping_method
+    INNER JOIN orders ON orders.shipping_method = shipping_method.shipping_method_id
+    WHERE orders.order_id = :orderid;';
+    //prepare the sql statement
+    $stmt = getDB()->prepare($sql);
+    $stmt->execute([
+        ':orderid' => $orderId
+    ]);
+    $price = $stmt->fetch();
+    return $price[0];
+ }
+
 
 
 

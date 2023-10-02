@@ -265,13 +265,34 @@ if (strpos($route, '/addresses/delete/shipping') !== false){
     exit();
 }
 
+if (strpos($route, '/account/orders') !== false){
+    if(!userIsLoggedIn($userId)){
+        $redirect = $baseurl.'index.php/login';
+        header("Location: $redirect");
+        exit();
+    }   
+}
+
 ########### CHECKOUT #########
 
 if (strpos($route, '/checkout/shipping') !== false){
     if(everyCartItemHasColorAndSize($userId) && userHasCompletShippingInformation($userId) && userApproved($userId)){
+        if(isset($_POST['shipping'])){
+            if($_POST['shipping'] == 1){
+                createNewTmpOrder($userId, 1);
+            }elseif($_POST['shipping'] == 2){
+                createNewTmpOrder($userId, 2);
+            }else{
+                createNewTmpOrder($userId, 1);
+            }
+            // Redirect to the page where user come from
+            $redirect = $baseurl.'index.php/checkout/paymentSelection';
+            header("Location: $redirect");
+            exit();   
+        }
         //TODO
         $_SESSION['checkoutStatus'] = 'RUNNING';
-        createNewTmpOrder($userId, 1);
+        
     }else{
         // Redirect to the page where user come from
         $redirect = $baseurl.'index.php/cart';
@@ -312,6 +333,11 @@ if (strpos($route, '/checkout/paymentComplete') !== false){
             if(paypalPaymentComplete($_POST['token'], $_POST['PayerID']) == 'COMPLETED') { 
                 $orderCode = $_SESSION['orderCode'];
                 transformTmpOrderToOrder($userId, $orderCode);
+                $orderId = getOrderIdByOrderCode($order_code);
+                #sendTestOrderToGelato($orderId, $userId);
+                //TODO response von gelato
+                //if financialStatus = paid and fulfillmentStatus = printed
+                //https://dashboard.gelato.com/docs/orders/v4/create/
                 createInvoice($userId, $orderCode);
                 $_SESSION['checkoutStatus'] = 'COMPLETE';
                 echo("<div class='alert alert-success' role='alert'>

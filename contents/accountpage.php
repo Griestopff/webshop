@@ -20,7 +20,6 @@
 </nav>
 
 <?php
-    if(userIsLoggedIn($userId)){
         // Include the specific content
         // Check if the route contains '/product/orders'
         if(strpos($route, '/account/orders') !== false){
@@ -57,12 +56,4 @@
                 </div>
             <?php
         }
-    }else{
-        echo("<div class='alert alert-warning text-center' role='alert'>
-        Du bist nicht eingeloggt!
-        </div>");
-        $redirect = $baseurl.'index.php/login';
-        header("Location: $redirect");
-        exit();
-    }
 ?>

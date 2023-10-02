@@ -49,7 +49,7 @@ function create_email($head, $content, $to, $bcc, $subject){
 function send_invoice_email($to, $orderId){
   require CONFIG_DIR.'/mail_config.php';
   //build the message
-  $message = "Deine Bestullung ist eingegangen.";
+  $message = "Deine Bestellung ist eingegangen.";
 
   try {
     //set email connection

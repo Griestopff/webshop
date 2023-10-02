@@ -20,7 +20,7 @@
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
         <?php
         foreach($matchingFiles as $file){
-          echo('<img src="'.$file.'" alt="Product Image" class="img-fluid slideshow-img shxrt-img">');
+          echo('<img id="productImage" src="'.$file.'" alt="Product Image" class="img-fluid slideshow-img shxrt-img">');
         }
         ?>
         <a class="next" onclick="plusSlides(1)">&#10095;</a>

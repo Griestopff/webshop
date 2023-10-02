@@ -40,10 +40,11 @@ function createPayPalOrder(string $accessToken, array $purchaseUnits, int $userI
     require_once CONFIG_DIR.'/paypal_config.php';
 
     //TODO feste werte austauschen
-    $shippingPrice = 5.00;
-    $taxPrice = 2.00;
-    //create JSON string with objects
+    $shippingPrice = getShippingMethodPriceById(getShippingMethodIdFromTmpOrder($userId));
+    //Tax isnt used
+    //$tax = 0.19;
 
+    //create JSON string with objects
     //orderItem -> foreach loop through all orderitems (all items in arrayofobjects)
     $cartItems = getCartItemsForUserId($userId);
     $arrayOfObjects = array();
@@ -61,20 +62,21 @@ function createPayPalOrder(string $accessToken, array $purchaseUnits, int $userI
         $unitAmount = new stdClass();
         $unitAmount->currency_code = "EUR";
         $unitAmount->value = $cartItem[3];
-        $taxObject = new stdClass();
-        $taxObject->currency_code = "EUR";
-        $taxObject->value = $taxPrice;
+        #$taxObject = new stdClass();
+        #$taxObject->currency_code = "EUR";
+        #$itemTax = round($cartItem[3] * $tax, 2);
+        #$taxObject->value = $itemTax;
         $orderItem = new stdClass();
         $orderItem->name = $cartItem[2];
         $orderItem->quantity = $cartItem[6];
         $orderItem->unit_amount = $unitAmount;
-        $orderItem->tax = $taxObject;
+        #$orderItem->tax = $taxObject;
         $arrayOfObjects[] = $orderItem;
 
         $priceSum = $priceSum + ($cartItem[3] * $cartItem[6]);
-        $taxSum = $taxSum + ($taxPrice * $cartItem[6]);
+        #$taxSum = $taxSum + ($itemTax * $cartItem[6]);
     }
-    $amountSum = round($priceSum + $taxSum + $shippingPrice, 2);
+    $amountSum = round($priceSum + $shippingPrice, 2);
 
     //total price off all items in order (items[].unit_amount * items[].quantity))
     $itemTotalObject = new stdClass();
@@ -94,7 +96,7 @@ function createPayPalOrder(string $accessToken, array $purchaseUnits, int $userI
     $breakdownObject = new stdClass();
     $breakdownObject->item_total = $itemTotalObject;
     $breakdownObject->shipping = $shippingTotalObject;
-    $breakdownObject->tax_total = $taxTotalObject;
+    #$breakdownObject->tax_total = $taxTotalObject;
     
     //amoutnt value is value off all (orderItemsSum + taxesSum + shipping,...)
     $amountObject = new stdClass();
@@ -177,7 +179,8 @@ function createPayPalOrder(string $accessToken, array $purchaseUnits, int $userI
 
     //change response to PHP-Array (without true would be stdClass Object)
     $data = json_decode($result,true);
-    var_dump($data);
+    //DEBUGGING
+    //var_dump($data);
     //checks response need PAYER_ACTI ON_REQUIRED
     if (isset($data['status'])) {
         if($data['status'] !== "PAYER_ACTION_REQUIRED"){

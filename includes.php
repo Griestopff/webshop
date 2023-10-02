@@ -8,6 +8,7 @@ require_once __DIR__.'/functions/paypal.php';
 require_once __DIR__.'/functions/order.php';
 require_once __DIR__.'/functions/mail.php';
 require_once __DIR__.'/functions/invoice.php';
+require_once __DIR__.'/functions/gelato.php';
 
 
 require_once __DIR__.'/routes.php';

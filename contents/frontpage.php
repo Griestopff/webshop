@@ -1,6 +1,8 @@
 <!--The frontpage is the first page the user sees-->
 <?php
   checkWishlistCookie();
+  #sendTestOrderToGelato(41,1);
+  
 ?>
 <div id="banner">
       Mein Shop
