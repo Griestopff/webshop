@@ -326,25 +326,43 @@ if (strpos($route, '/checkout/paymentSelection') !== false){
 if (strpos($route, '/checkout/paymentComplete') !== false){
     //if user is logged in get cash from customer
     if(userIsLoggedIn($userId) && userApproved($userId)){
-        #TODO
+        #TODO other payment methods
         #if(PAYPAL){}
-        if(isset($_POST['token']) && isset($_POST['PayerID']) && isset($_SESSION['orderCode']) && $_SESSION['checkoutStatus'] == 'RUNNING'){
-            //TODO check with internet if working
-            if(paypalPaymentComplete($_POST['token'], $_POST['PayerID']) == 'COMPLETED') { 
-                $orderCode = $_SESSION['orderCode'];
-                transformTmpOrderToOrder($userId, $orderCode);
-                $orderId = getOrderIdByOrderCode($order_code);
-                #sendTestOrderToGelato($orderId, $userId);
-                //TODO response von gelato
-                //if financialStatus = paid and fulfillmentStatus = printed
-                //https://dashboard.gelato.com/docs/orders/v4/create/
-                createInvoice($userId, $orderCode);
-                $_SESSION['checkoutStatus'] = 'COMPLETE';
-                echo("<div class='alert alert-success' role='alert'>
-                Deine Bestellung war erfolgreich! Sieh sie dir <a href='".$baseurl."index.php/account/orders'>hier</a> an.
-              </div>");
-           } 
-        }
+            //checks if every data for payment is set
+            if(isset($_POST['token']) && isset($_POST['PayerID']) && isset($_SESSION['orderCode']) && $_SESSION['checkoutStatus'] == 'RUNNING'){
+                //the customer pays 
+                if(paypalPaymentComplete($_POST['token'], $_POST['PayerID']) == 'COMPLETED') { 
+                    //tmporder to "real" order
+                    $orderCode = $_SESSION['orderCode'];
+                    transformTmpOrderToOrder($userId, $orderCode);
+                    $orderId = getOrderIdByOrderCode($orderCode);
+                    //the order is send to gelato
+                    $gelatoOrderId = sendOrderToGelato($orderId, $userId);
+                    //if gelato order correct
+                    if($gelatoOrderId){
+                        //save gelato id in order
+                        setGelatoOrderId($orderId, $gelatoOrderId);
+                        //set to paid because its paid via paypal
+                        updateOrderStatusToPaid($orderId);
+                        //creates the pdf and send emails
+                        createInvoice($userId, $orderCode);
+                        $_SESSION['checkoutStatus'] = 'COMPLETE';
+                        echo("<div class='alert alert-success' role='alert'>
+                             Bestellung war erfolgreich! Sieh sie dir <a href='".$baseurl."index.php/account/orders'>hier</a> an.
+                            </div>");
+                    }else{
+                        //DEBUGGING
+                        echo("Fehler bei der Gelato Order!");
+                        send_invoice_error_email_to_shxrt($orderId, $userId);
+                    }
+                    
+                    
+                }else{
+                    echo("<div class='alert alert-danger' role='alert'>
+                            Etwas ist bei der Bezahlung schiefgegangen.
+                            </div>");
+                }
+            }
     }else{
         # redirect to the loginpage
         echo("<div class='alert alert-warning text-center' role='alert'>

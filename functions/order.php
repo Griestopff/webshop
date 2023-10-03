@@ -225,37 +225,34 @@ function getOrderIdByOrderCode($order_code) {
     return $price[0];
  }
 
+ function updateOrderStatusToPaid($orderId){
+    try {    
+        // SQL Prepared Statement
+        $sql = "UPDATE orders SET paid = TRUE WHERE order_id = :orderid;";
+        // Prepared Statement
+        $stmt = getDB()->prepare($sql);
+        $stmt->execute([
+            ':orderid'=>$orderId
+        ]);
+    }catch(PDOException $e) {
+        // Fehlerbehandlung, falls ein Fehler auftritt
+        // echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
+    }
+ }
 
+ function setGelatoOrderId($orderId, $gelatoId){
+    try {    
+        // SQL Prepared Statement
+        $sql = "UPDATE orders SET gelato_id = :gelatoid WHERE order_id = :orderid;";
+        // Prepared Statement
+        $stmt = getDB()->prepare($sql);
+        $stmt->execute([
+            ':orderid'=> $orderId,
+            ':gelatoid' => $gelatoId
+        ]);
+    }catch(PDOException $e) {
+        // Fehlerbehandlung, falls ein Fehler auftritt
+        // echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
+    }
+ }
 
-
-
-//TODO
-//tmp_orders tabellen -> funktioniert genau wie orders mit der funktion createOrders
-//es wird bei jeden abschitt(shipping/payment/...) eine extra sessionvariable gesetzt -> zum schluss werden alle kontrolliert -> damit man nicht einfach /checkout/finish eingeben kann
-//wird bei checkout/finish in orders mit createorder() übertragen und dann gelöscht(cart auch erst da löschen)
-//wenn user auf bestellen klickt -> createTmpOrder
-//wenn er abbricht und nochmal draufklickt, werden alle einträge in tmp_orders von ihm gelöscht und neu createTmpOrder ausgeführt
-/*
-CREATE TABLE tmp_orders (
-    order_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    shipping_address VARCHAR(1000),
-    paid BOOLEAN,
-    delivered BOOLEAN,
-    shipping_method INT,
-    order_code INT UNIQUE,
-    FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (shipping_method) REFERENCES shipping_method(shipping_method_id)
-);
-
--- Tabelle für Bestellpositionen (order_item)
-CREATE TABLE tmp_order_item (
-    order_item_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT,
-    product_id INT,
-    size VARCHAR(20),
-    color VARCHAR(20),
-    amount INT,
-    FOREIGN KEY (order_id) REFERENCES orders(tmp_order_id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES product(product_id)
-);*/

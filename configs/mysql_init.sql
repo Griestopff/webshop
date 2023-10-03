@@ -173,6 +173,7 @@ CREATE TABLE `orders` (
   `delivered` tinyint(1) DEFAULT NULL,
   `shipping_method` int(11) DEFAULT NULL,
   `order_code` int(11) DEFAULT NULL,
+  `gelato_id` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`order_id`),
   UNIQUE KEY `order_code` (`order_code`),
   KEY `shipping_method` (`shipping_method`),
@@ -328,6 +329,28 @@ LOCK TABLES `delete_user` WRITE;
 /*!40000 ALTER TABLE `delete_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `gelato_uid`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_gelato_uid` (
+  `product_id` int(11) DEFAULT NULL,
+  `color` varchar(20) NOT NULL,
+  `size` varchar(20) NOT NULL,
+  `gelato_uid` varchar(200) NOT NULL,
+  PRIMARY KEY (`gelato_uid`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `gelato_uid_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gelato_uid`
+--
+
+LOCK TABLES `gelato_uid` WRITE;
+/*!40000 ALTER TABLE `gelato_uid` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gelato_uid` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `tmp_order_item`

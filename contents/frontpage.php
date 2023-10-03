@@ -3,6 +3,7 @@
   checkWishlistCookie();
   #sendTestOrderToGelato(41,1);
   
+  
 ?>
 <div id="banner">
       Mein Shop

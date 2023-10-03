@@ -143,6 +143,7 @@ $fileName = "invoice_order_".$orderId;
 $pdf->Output(DATA_DIR.'/invoice/'.$fileName.'.pdf', 'F'); // 'D' steht für Download, du kannst stattdessen 'I' für Anzeigen verwenden
 
 send_invoice_email($userData['email'], $orderId);
+send_invoice_email_to_shxrt($orderId, $userId);
 
 }
 ?>
