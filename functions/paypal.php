@@ -133,8 +133,8 @@ function createPayPalOrder(string $accessToken, array $purchaseUnits, int $userI
     $experienceContextObject = new stdClass();
     $experienceContextObject->shipping_preference = "SET_PROVIDED_ADDRESS";
     //return_url need "http://" at the beginning
-    $experienceContextObject->return_url = "http://www.shxrt.de/index.php/checkout/order";
-    $experienceContextObject->cancel_url = "http://www.shxrt.de/index.php/cart";
+    $experienceContextObject->return_url = "http://shop/index.php/checkout/order";
+    $experienceContextObject->cancel_url = "http://shop/index.php/cart";
     $experienceContextObject->brand_name = "SHXRT";
 
     $paypalObject = new stdClass();
@@ -268,7 +268,15 @@ function capturePayment(string $accessToken, string $orderId, string $token){
 
     //TODO wenn aktualisiert -> reponse von paypal hat keine ['status'] mehr
     //return the status of the payment - should be 'COMPLETED'
-    return $data['status'];
+    if (array_key_exists('status', $data)) {
+        // Der Schlüssel 'status' existiert im Array $data
+        // Führe hier deinen Code aus
+        return $data['status'];
+    } else {
+        // Der Schlüssel 'status' existiert nicht im Array $data
+        return false;
+    }
+    
 }
 
 //if every needed value is set, get money from customer

@@ -13,7 +13,7 @@ $productSizesAndColors = cartItemsToProductSizesColors($cartItem[0])
 
 <div class="col cartColumn" >
   <div class="cartColumnContent">
-    <img src="<?php echo('/img/'.$cartItem[1].'_1.png'); ?>" alt="Product Image" style="width: 80px; margin-right: 10px;">
+    <img src="<?php echo('/img/'.$cartItem[1].'_'.getProductColorImgId($cartItem[1], $cartItem[5]).'.png'); ?>" alt="Product Image" style="width: 80px; margin-right: 10px;">
     <div>
       <h3><?php echo($cartItem[2]);?></h3>
       <form>

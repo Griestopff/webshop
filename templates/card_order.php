@@ -36,24 +36,28 @@
                             <li class="list-group-item">
                                 <strong>Versand:</strong> <?php 
                                 if($order['shipping_method'] == 1){
-                                    echo('Standard Versand (4-7 Werktage)');
+                                    echo('Standard Versand');
                                 }else{
-                                    echo('Express Versand (3-6 Werktage)');
+                                    echo('Express Versand');
                                 } ?>
                             </li>
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <!-- Cards of order_items -->
-                        <div class="row">
-                            <?php
-                                foreach ($orderItems as $orderItem) {
-                                    include('./templates/card_orderitem.php');
-                                }
-                            ?>
+                        <button class="btn btn-warning" data-bs-toggle="collapse" data-bs-target="#collapseDiv<?php echo($order['order_code']);?>">Bestellungsinhalt</button>
+                        <div class="collapse" id="collapseDiv<?php echo($order['order_code']);?>">
+                                <br>
+                            <!-- Cards of order_items -->
+                            <div class="row">
+                                <?php
+                                    foreach ($orderItems as $orderItem) {
+                                        include('./templates/card_orderitem.php');
+                                    }
+                                ?>
+                            </div>
                         </div>
                     </div>
                 </div>
             <hr>
         
-    
+   

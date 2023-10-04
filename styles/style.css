@@ -133,3 +133,18 @@ input[type="range"]::-moz-range-thumb {
 .form-range:focus::-moz-range-thumb {
   box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem #fd7e14;
 }
+
+/* CSS-Regel, um den Hover-Effekt von Bootstrap-Buttons zu entfernen */
+.btn-no-hover:hover {
+  /* Hier kannst du die Eigenschaften definieren, die du ändern möchtest.
+     Zum Entfernen des Hover-Effekts kannst du beispielsweise die Hintergrundfarbe transparent machen. */
+  background-color: transparent !important;
+  /* Wenn du den Hover-Effekt für den Rahmen (Border) entfernen möchtest: */
+  box-shadow: none !important;
+  color: currentColor;
+}
+.btn-no-hover:focus {
+    /* Wenn du den Hover-Effekt für den Rahmen (Border) entfernen möchtest: */
+  box-shadow: none !important;
+  color: currentColor;
+}

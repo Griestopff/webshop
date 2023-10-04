@@ -55,16 +55,16 @@
       </form>
       <br>
       <div class="row" style="margin:0px">
-        <button type="button" class="btn btn-outline-secondary" style ="color:green">
+        <button type="button" class="btn btn-outline-secondary btn-no-hover" style ="color:green">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
           </svg>
-          <small>Verfügbar, lieferbar 1-3 Werktage</small>
+          <small>Verfügbar, versandfertig in 1-3 Werktage</small>
         </button>
       </div>
       <br>
       <div class="row" style="margin:0px">
-        <button type="button" class="btn btn-outline-secondary">
+        <button type="button" class="btn btn-outline-secondary btn-no-hover">
           <small style="opacity: 0.5;">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="15" height="10">
               <!-- Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) -->

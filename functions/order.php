@@ -256,3 +256,17 @@ function getOrderIdByOrderCode($order_code) {
     }
  }
 
+ function getShippingMethodPriceFromTmpOrderById(int $userId){
+    $sql = 'SELECT shipping_method.price
+    FROM shipping_method
+    INNER JOIN tmp_orders ON tmp_orders.shipping_method = shipping_method.shipping_method_id
+    WHERE tmp_orders.user_id = :userid;';
+    //prepare the sql statement
+    $stmt = getDB()->prepare($sql);
+    $stmt->execute([
+        ':userid' => $userId
+    ]);
+    $price = $stmt->fetch();
+    return $price[0];
+ }
+

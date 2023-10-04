@@ -53,6 +53,10 @@ function sendOrderToGelato($orderId, $userId):bool{
     $itemArray = [];
     foreach ($orderItems as $orderItem) {
         $gelatoUid = getGelatoUid($orderItem['product_id'], $orderItem['color'], $orderItem['size']);
+        //if there is no gelato uid to this item
+        if(!$gelatoUid){
+            return false;
+        }
         
         $item = [
             "itemReferenceId" => $orderItem['product_id']."_".$orderItem['color']."_".$orderItem['size'],
@@ -135,6 +139,15 @@ function getGelatoUid($productId, $color, $size){
         ':color' => $color,
         ':size' => $size
     ]);
+    // false if connection error to DB
+    if($stmt === false){
+        return false;
+    }
     $uid = $stmt->fetch();
+    // false if connection error to DB
+    if($uid === false || $uid === NULL){
+        return false;
+    }
+    
     return $uid[0];
 }

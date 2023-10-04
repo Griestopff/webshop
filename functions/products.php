@@ -136,3 +136,30 @@ function getImagesByProductId($directory, $prefix) {
     return $files;
   }
 
+  function getProductColorImgId($productId, $color){
+    try {    
+        // SQL Prepared Statement
+        $sql = 'SELECT img_id FROM product_color_img WHERE product_id = :productid AND color = :color;';
+        //prepare the sql statement
+        $stmt = getDB()->prepare($sql);
+        $stmt->execute([
+            ':productid' => $productId,
+            ':color' => $color
+        ]);
+        // false if connection error to DB
+        if($stmt === false){
+            return 1;
+        }
+        $imgId = $stmt->fetch();
+        // false if connection error to DB
+        if($imgId === false || $imgId === NULL){
+            return 1;
+        }
+        
+        return $imgId[0];
+    } catch (PDOException $e) {
+        // Handle any errors that occur during the update
+        // echo "Es ist ein Fehler aufgetreten: " . $e->getMessage();
+        return 1;
+    }
+  }
