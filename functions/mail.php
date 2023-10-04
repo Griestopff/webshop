@@ -130,7 +130,7 @@ function send_invoice_email_to_shxrt($orderId, $userId){
 function send_invoice_error_email_to_shxrt($orderId, $userId){
  
   //build the message
-  $message = "Die Bestellung ".$orderId." von User ".$userId." ist bei Gelato fehlgeschlagen.";
+  $message = "Bei der Bestellung ".$orderId." von User ".$userId." ist bei Gelato fehlgeschlagen.";
 
   try {
     //set email connection

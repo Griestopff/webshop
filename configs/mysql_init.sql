@@ -329,7 +329,7 @@ LOCK TABLES `delete_user` WRITE;
 /*!40000 ALTER TABLE `delete_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
-DROP TABLE IF EXISTS `gelato_uid`;
+DROP TABLE IF EXISTS `product_gelato_uid`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_gelato_uid` (
@@ -337,7 +337,6 @@ CREATE TABLE `product_gelato_uid` (
   `color` varchar(20) NOT NULL,
   `size` varchar(20) NOT NULL,
   `gelato_uid` varchar(200) NOT NULL,
-  PRIMARY KEY (`gelato_uid`),
   KEY `product_id` (`product_id`),
   CONSTRAINT `gelato_uid_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

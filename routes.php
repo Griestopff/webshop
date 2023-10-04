@@ -337,11 +337,8 @@ if (strpos($route, '/checkout/paymentComplete') !== false){
                     transformTmpOrderToOrder($userId, $orderCode);
                     $orderId = getOrderIdByOrderCode($orderCode);
                     //the order is send to gelato
-                    $gelatoOrderId = sendOrderToGelato($orderId, $userId);
                     //if gelato order correct
-                    if($gelatoOrderId){
-                        //save gelato id in order
-                        setGelatoOrderId($orderId, $gelatoOrderId);
+                    if(sendOrderToGelato($orderId, $userId)){
                         //set to paid because its paid via paypal
                         updateOrderStatusToPaid($orderId);
                         //creates the pdf and send emails
@@ -352,7 +349,10 @@ if (strpos($route, '/checkout/paymentComplete') !== false){
                             </div>");
                     }else{
                         //DEBUGGING
-                        echo("Fehler bei der Gelato Order!");
+                        echo("<div class='alert alert-danger' role='alert'>
+                            Etwas ist beim senden der Bestellung schiefgegangen.
+                            </div>");
+                        //TODO paypal geld zurückzahlen?
                         send_invoice_error_email_to_shxrt($orderId, $userId);
                     }
                     

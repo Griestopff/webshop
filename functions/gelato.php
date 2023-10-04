@@ -117,7 +117,10 @@ function sendOrderToGelato($orderId, $userId):bool{
 
     //TODO change pending to paid in live system i think and check if these attributes are there
     if($orderCreateData->financialStatus == "pending" && $orderCreateData->fulfillmentStatus == "created"){
-        return $orderCreateData->id;
+        //save gelato id in order
+        $gelatoOrderId = $orderCreateData->id;
+        setGelatoOrderId($orderId, $gelatoOrderId);
+        return true;
     }else{
         return false;
     }
