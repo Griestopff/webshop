@@ -222,6 +222,28 @@ INSERT INTO `product` VALUES (1,'Best Shirt','[\"blue\", \"red\", \"green\"]','[
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+--
+-- Table structure for table `product_color_img`
+--
+
+DROP TABLE IF EXISTS `product_color_img`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_color_img` (
+  `product_id` int(11) NOT NULL,
+  `color` varchar(40) NOT NULL,
+  `img_id` int(11) NOT NULL,
+  UNIQUE KEY `product_id` (`product_id`,`color`),
+  UNIQUE KEY `product_id_2` (`product_id`,`img_id`),
+  CONSTRAINT `product_color_img_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_color_img`
+--
+
 --
 -- Table structure for table `reset_password`
 --
