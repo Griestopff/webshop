@@ -72,9 +72,13 @@ if(strpos($route, '/register/code') !== false){
                 Erlaubte Zeichen: Buchstaben (Groß- und Kleinbuchstaben), Zahlen und Sonderzeichen !@#$%&*()
             </small>
         </div>
-        <button type="submit" class="btn btn-primary">Registrieren</button>
+        <br>
+        <div class="row">
+        <button type="submit" class="btn btn-warning">Registrieren</button>
+        </div>
     </form>
 </div>
 <?php
         }
 ?>
+<br>
