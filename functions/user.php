@@ -54,7 +54,7 @@ function insertNewUser($username, $password, $email, $first_name, $last_name){
         ]);
 
         //TODO baseurl hinzufügen
-        $link = '<a href="http://shxrt.de/index.php/register/code/'.$registercode.'">Anmeldung best&#228;tigen</a>';
+        $link = '<a href="http://www.shxrt.de/index.php/register/code/'.$registercode.'">Anmeldung best&#228;tigen</a>';
        
         create_email("Rufen folgenden Link auf um deine Email zu best&#228;tigen:", $link, $email, NULL, "Email bestaetigen");
         

@@ -2,7 +2,7 @@
     $userData = getUserDataById($userId);
     if(isset($_POST['emailReapeat'])){
         //TODO baseurl hinzufügen
-        $link = '<a href="https://shxrt.de/index.php/register/code/'.$userData['registercode'].'">Anmeldung best&#228;tigen</a>';
+        $link = '<a href="http://www.shxrt.de/index.php/register/code/'.$userData['registercode'].'">Anmeldung best&#228;tigen</a>';
         create_email("Rufen folgenden Link auf um deine Email zu best&#228;tigen:", $link, $userData['email'], NULL, "Email bestaetigen");
     }
 #TODO delete user
