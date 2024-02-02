@@ -151,3 +151,73 @@ function getGelatoUid($productId, $color, $size){
     
     return $uid[0];
 }
+
+
+function checkGelatoAvailability($productId, $color, $size):string{
+
+    $gelato_uid = getGelatoUid($productId, $color, $size);
+    #echo $gelato_uid;
+
+    # === Define headers ===
+    $headers = [
+        "Content-Type: application/json",
+        "X-API-KEY: ".GELATO_SECRET
+    ];
+
+    //defines product array
+    $productsArray = [
+        "products" => [$gelato_uid]
+    ];
+
+    # === Set-up order request ===
+    $stockUrl = /*GELATO_BASE_URL.*/"https://product.gelatoapis.com/v3/stock/region-availability";
+    
+    # === Send create order request ===
+    $response = request($stockUrl, $productsArray, $headers);
+    $availabilityData = json_decode($response);
+    #var_dump($availabilityData);
+
+    if(property_exists($availabilityData, "productsAvailability")){
+        // Zugriff auf das Array 'productsAvailability'
+        $productsAvailability = $availabilityData->productsAvailability;
+
+        // Zugriff auf das erste Produkt im Array (Index 0)
+        $product = $productsAvailability[0];
+
+        // Zugriff auf das 'availability'-Array des Produkts
+        $availability = $product->availability;
+
+        // Suche nach dem EU-Objekt im 'availability'-Array
+        $statusInEU = NULL;
+        foreach ($availability as $region) {
+            if ($region->stockRegionUid === "EU") {
+                $statusInEU = $region->status; // Speichere den Status, wenn die Region EU ist
+                break; // Beende die Schleife, da das gesuchte Objekt gefunden wurde
+            }
+        }
+
+        if ($statusInEU === "in-stock") {
+            return "stock";
+        } else if ($statusInEU === "out-of-stock-replenishable") {
+            #Product is temporarily out of stock at Gelato Partners but there are upcoming products that will replenish depleted stocks on an estimated replenishmentDate
+            return "nonstock";
+        } else if ($statusInEU === "out-of-stock") {
+            #Product is currently out of stock at both Gelato Partners and the Gelato Hub, thus cannot be delivered to the given region.
+            return "nonstock";
+        } else if ($statusInEU === "non-stockable") {
+            #Product is not stock-able, thus an information if it is currently in stock or out of stock cannot be given. Example of non-stock-able products: printable mugs, posters, canvases, cards etc.
+            return "nonstock";
+        } else if ($statusInEU === "not-supported") {
+            #Product is not recognized by Gelato. 
+            return "nonstock";
+        } else {
+            return "unknown";
+        }
+
+        //DEBUGGING
+        #echo "Status in EU: " . $statusInEU;
+    }else{
+        return "unknown";
+    }
+}
+    
