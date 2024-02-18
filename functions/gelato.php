@@ -152,7 +152,7 @@ function getGelatoUid($productId, $color, $size){
     return $uid[0];
 }
 
-
+#TODO bei bestellung abfragen -> keine nicht vorrätigen produkte bestellen
 function checkGelatoAvailability($productId, $color, $size):string{
 
     $gelato_uid = getGelatoUid($productId, $color, $size);

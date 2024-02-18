@@ -6,30 +6,6 @@
 
     checkWishlistCookie();
 
-    #check which product (color-size combination) is available
-    $products_available = [];
-    $products_not_available = [];
-
-    #TODO distiguish "stock" "nonstock" and "unknown"
-    foreach(json_decode($product["colors"]) as $color){
-      foreach(json_decode($product["sizes"]) as $size){
-        $availability = checkGelatoAvailability($parts[2], $color,  $size);
-        if($availability == "stock"){
-          $pair = [$color, $size];
-          array_push($products_available, $pair);
-        }else if($availability == "nonstock"){
-          $pair = [$color, $size];
-          array_push($products_not_available, $pair);
-        }else if($availability == "unknown"){
-          $pair = [$color, $size];
-          array_push($products_not_available, $pair);
-        }else{
-          $pair = [$color, $size];
-          array_push($products_not_available, $pair);
-        }
-      }
-    }
-
     $directory = '../htdocs/img';
     $prefix = $product['product_id'].'_';
     $matchingFiles = getImagesByProductId($directory, $prefix);
@@ -78,55 +54,14 @@
         </div>
       </form>
       <br>
-      <div class="row" style="margin:0px">
-        
-          
-          <?php
-          if(count($products_not_available) < 1 && count($products_available) > 0){
-            echo('
-            <button type="button" class="btn btn-outline-secondary btn-no-hover" style ="color:green">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-            </svg>
-            <small>Verfügbar, versandfertig in 1-3 Werktagen</small>
-            </button>');
-          }else if(count($products_not_available) > 0 && count($products_available) > 0){
-            echo('
-            <button type="button" class="btn btn-outline-secondary btn-no-hover" style ="color:green">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-            </svg>
-            <small>Verfügbar, versandfertig in 1-3 Werktagen</small>
-            </button>
-            ');
-            $products_not_ava = "";
-            foreach($products_not_available as $not){
-              $products_not_ava = $products_not_ava.implode(" ", $not).", ";
-            }
-            echo('
-            <button type="button" class="btn btn-outline-secondary btn-no-hover" style ="color:red">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
-            </svg>
-            <small>Nicht auf Lager: '.$products_not_ava.'</small>
-            </button>');
-          }else if(count($products_not_available) > 0 && count($products_available) < 1){
-            #if no product available or no information from gelato
-            $products_not_ava = "";
-            foreach($products_not_available as $not){
-              $products_not_ava = $products_not_ava.implode(" ", $not).", ";
-            }
-            echo('
-            <button type="button" class="btn btn-outline-secondary btn-no-hover" style ="color:red">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
-            </svg>
-            <small>Nicht auf Lager: '.$products_not_ava.'</small>
-            <!--<small>Es liegen keine Informationen zur Verfügbarkeit vor</small>-->
-            </button>');
-          }
-          ?>
-       
+      <div id="availability" class="row" style="margin:0px">
+        <button type="button" class="btn btn-outline-secondary btn-no-hover">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+          </svg>
+          <small>Lade Information zur Verfügbarkeit</small>
+        </button>
       </div>
       <br>
       <div class="row" style="margin:0px">
@@ -154,6 +89,8 @@
     </div>
   </div>
 </div>
+<br>
+
 
 <!-- image slideshow -->
 <script>
@@ -172,5 +109,51 @@
     }
     slides[slideIndex - 1].style.display = "block";
   }
+
+  // Check stock availability for product with AJAX
+  // get <select>-elements
+  var colorDropdown = document.querySelector('select[name="color"]');
+  var sizeDropdown = document.querySelector('select[name="size"]');
+
+  // function to send ajax-request and include content
+  function sendAjaxRequest() {
+    // XMLHttpRequest-object
+    var xhttp = new XMLHttpRequest();
+
+    // get select field values
+    var selectedColor = colorDropdown.value;
+    var selectedSize = sizeDropdown.value;
+
+    // create URL for ajax request
+    var url = "<?php echo($baseurl."index.php/ajax?color=");?>" + encodeURIComponent(selectedColor) + "&size=" + encodeURIComponent(selectedSize) + "&id=" +  encodeURIComponent(<?php echo($parts[2])?>);
+    //var url = "http://shop/index.php/ajax?color=" + encodeURIComponent(selectedColor) + "&size=" + encodeURIComponent(selectedSize) + "&id=" +  encodeURIComponent(<?php echo($parts[2])?>);
+    xhttp.open("GET", url, true);
+
+    // function for successful request
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+          // get specific part of response DOM
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(this.responseText, "text/html");
+          var spezifischerTeil = doc.getElementById('ava');
+
+          // show response
+          document.getElementById("availability").innerHTML = spezifischerTeil.innerHTML;
+        }
+    };
+
+    // send request
+    xhttp.send();
+  }
+
+  // live select field values with EventListener
+  colorDropdown.addEventListener('change', sendAjaxRequest);
+  sizeDropdown.addEventListener('change', sendAjaxRequest);
+  // load conten first, then first request
+  document.addEventListener('DOMContentLoaded', function() {
+    sendAjaxRequest();
+  });
+
+
 </script>
 

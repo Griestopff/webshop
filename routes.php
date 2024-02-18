@@ -6,8 +6,6 @@ $userId = getCurrentUserId();
 // get the route from URL
 $url = $_SERVER['REQUEST_URI'];
 
-
-
 $indexPHPPosition = strpos($url, 'index.php');
 $route = substr($url, $indexPHPPosition);
 $route = str_replace('index.php', '', $route);
