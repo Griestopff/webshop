@@ -13,6 +13,17 @@
 
 ?>
 <br>
+
+
+<style>
+        /* Standardmäßig zeigen wir den Inhalt für deaktiviertes JavaScript an */
+        .js-enabled {
+            display: none;
+        }
+    </style>
+
+
+
 <div class="container">
   <div class="row">
     <div class="col-md-6">
@@ -49,11 +60,24 @@
           <?php echo(fillFormWithJsonOptions("color", $product['colors']));?>        
         </div>
         <br>
-        <div class="row" style="margin:0px">
+
+        
+        <!-- Dieser Inhalt wird angezeigt, wenn JS deaktiviert ist -->
+        <div class="row js-disabled" style="margin:0px">
           <button type="submit" class="btn btn-warning">Zum Warenkorb</button>
         </div>
+        <!-- Dieser Inhalt wird angezeigt, wenn JS aktiviert ist -->
+        <div class="row js-enabled" style="margin:0px">
+          <button type="submit" id="jsActiveButton" class="btn btn-warning">Zum Warenkorb</button>
+        </div>
+        
+        
+
       </form>
       <br>
+      <!-- Wird erst angezeigt wenn produkt zum cart hinzugefügt -->
+      <div id="cartSuccess" class="row" style="margin:0px">
+      </div>
       <div id="availability" class="row" style="margin:0px">
         <button type="button" class="btn btn-outline-secondary btn-no-hover">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
@@ -92,6 +116,27 @@
 <br>
 
 
+
+    <noscript>
+        <!-- Diese Sektion wird nur angezeigt, wenn JavaScript deaktiviert ist -->
+        <style>
+            .js-disabled {
+                display: block;
+            }
+            .js-enabled {
+                display: none;
+            }
+        </style>
+    </noscript>
+   
+
+    <script>
+        // Wenn JavaScript aktiv ist, verbergen wir den Inhalt für deaktiviertes JS und zeigen die Alternative an
+        document.querySelector('.js-disabled').style.display = 'none';
+        document.querySelector('.js-enabled').style.display = 'block';
+    </script>
+
+
 <!-- image slideshow -->
 <script>
   let slideIndex = 1;
@@ -116,7 +161,7 @@
   var sizeDropdown = document.querySelector('select[name="size"]');
 
   // function to send ajax-request and include content
-  function sendAjaxRequest() {
+  function sendAjaxAvaRequest() {
     // XMLHttpRequest-object
     var xhttp = new XMLHttpRequest();
 
@@ -146,13 +191,55 @@
     xhttp.send();
   }
 
+// function to send ajax-request and include content
+function sendAjaxCartRequest() {
+    // XMLHttpRequest-object
+    var xhttp = new XMLHttpRequest();
+
+    // get select field values
+    var selectedColor = colorDropdown.value;
+    var selectedSize = sizeDropdown.value;
+
+    // create URL for ajax request
+    var url = "<?php echo($baseurl."index.php/ajax?cart=add");?>" + "&id=" +  encodeURIComponent(<?php echo($parts[2])?>)   + "&color=" + encodeURIComponent(selectedColor) + "&size=" + encodeURIComponent(selectedSize);
+    xhttp.open("GET", url, true);
+
+    // function for successful request
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+          // get specific part of response DOM
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(this.responseText, "text/html");
+          var spezifischerTeil = doc.getElementById('ajaxCart');
+          var cartAlert = doc.getElementById('cartSuccess');
+
+          // show response
+          document.getElementById("cart").innerHTML = spezifischerTeil.innerHTML;
+          document.getElementById("cartSuccess").innerHTML = cartAlert.innerHTML;
+
+        }
+    };
+   
+    // send request
+    xhttp.send();
+  }
+
+
   // live select field values with EventListener
-  colorDropdown.addEventListener('change', sendAjaxRequest);
-  sizeDropdown.addEventListener('change', sendAjaxRequest);
+  colorDropdown.addEventListener('change', sendAjaxAvaRequest);
+  sizeDropdown.addEventListener('change', sendAjaxAvaRequest);
   // load conten first, then first request
   document.addEventListener('DOMContentLoaded', function() {
-    sendAjaxRequest();
+    sendAjaxAvaRequest();
   });
+
+  document.getElementById("jsActiveButton").addEventListener("click", function(event) {
+        // Verhindert, dass das Formular abgesendet wird
+        event.preventDefault();
+        //HIER AJAX AUFRUF
+        sendAjaxCartRequest();
+
+    });
 
 
 </script>
