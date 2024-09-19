@@ -119,6 +119,7 @@ input[type="range"]::-moz-range-thumb {
   /* Weitere Anpassungen, falls gewünscht */
 }
 
+
 /* Entfernen des Schatten-Effekts beim Klicken auf den Range-Balken */
 .form-range::-webkit-slider-thumb:active {
   background-color: #fd7e14;

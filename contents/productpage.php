@@ -15,11 +15,33 @@
 <br>
 
 
+<!-- TODO css auslagern!!!-->
 <style>
         /* Standardmäßig zeigen wir den Inhalt für deaktiviertes JavaScript an */
         .js-enabled {
             display: none;
         }
+
+        .animated-button {
+          cursor: pointer;
+          transition: transform 0.1s ease-in-out, background-color 0.1s ease-in-out;
+        }
+
+        .animated-button:active {
+          transform: scale(0.9);
+        }
+
+        .animated-button:focus {
+  outline: none; /* Entfernt den Fokus-Effekt */
+}
+
+#cartSuccess {
+  transition: background-color 0.5s ease, transform 0.5s ease;
+}
+
+#cartSuccess.reload-feedback {
+  transform: scale(1.08); /* Kleiner Vergrößerungseffekt */
+}
     </style>
 
 
@@ -64,11 +86,11 @@
         
         <!-- Dieser Inhalt wird angezeigt, wenn JS deaktiviert ist -->
         <div class="row js-disabled" style="margin:0px">
-          <button type="submit" class="btn btn-warning">Zum Warenkorb</button>
+          <button type="submit" class="btn btn-warning">Zum Warenkorb hinzufügen</button>
         </div>
         <!-- Dieser Inhalt wird angezeigt, wenn JS aktiviert ist -->
-        <div class="row js-enabled" style="margin:0px">
-          <button type="submit" id="jsActiveButton" class="btn btn-warning">Zum Warenkorb</button>
+        <div class="row js-enabled animated-button" style="margin:0px">
+          <button type="submit" id="jsActiveButton" class="btn btn-warning">Zum Warenkorb hinzufügen</button>
         </div>
         
         
@@ -239,7 +261,19 @@ function sendAjaxCartRequest() {
         //HIER AJAX AUFRUF
         sendAjaxCartRequest();
 
+         // Füge die Feedback-Animation hinzu
+    const contentDiv = document.getElementById('cartSuccess');
+    contentDiv.classList.add('reload-feedback');
+    
+    // Entferne die Animation nach einer kurzen Zeit, damit sie wiederholt werden kann
+    setTimeout(function() {
+      contentDiv.classList.remove('reload-feedback');
+    }, 500); // Die Dauer muss zur CSS-Animation passen
+
     });
+
+  
+
 
 
 </script>
