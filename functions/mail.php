@@ -50,7 +50,23 @@ function create_email($head, $content, $to, $bcc, $subject){
 function send_invoice_email($to, $orderId){
   
   //build the message
-  $message = "Deine Bestellung ist eingegangen.";
+  $message = 
+  '<html>
+  <body>
+    <p>Hallo, '.$to.'</p>
+    <p>du hast soeben eine neue Bestellung mit der Bestellnummer <strong>#'.$orderId.'</strong> aufgegeben.</p>
+    <p>Die Rechnung befindet sich im Anhang dieser E-Mail.</p>
+    <br>
+    <p>Mit freundlichen Grüßen<br>
+    Dein Bestellservice</p>
+    <hr>
+    <p style="font-size: small; color: #555;">
+      --<br>
+      Diese Nachricht wurde automatisch generiert.<br>
+      Bitte antworten Sie nicht auf diese E-Mail.
+    </p>
+  </body>
+</html>';
 
   try {
     //set email connection
@@ -74,15 +90,19 @@ function send_invoice_email($to, $orderId){
     //set if email use html format
     $mail->isHTML(true);
     
-    $mail->addAttachment('data/invoice/invoice_order_'.$orderId.'.pdf', 'invoice_order_'.$orderId.'.pdf');
-    //optional set html body with alternative plain text if html cant load
+    $filename = 'data/invoice/invoice_order_'.$orderId.'.pdf';
+    if (file_exists($filename)) {
+      $mail->addAttachment('data/invoice/invoice_order_'.$orderId.'.pdf', 'invoice_order_'.$orderId.'.pdf');
+    } else {
+      error_log("PDF nicht gefunden: $filename");
+    }    //optional set html body with alternative plain text if html cant load
     #$mail->Body    = 'This is the HTML message body <b>in bold!</b>, when using ->isHTML(true)';
     #$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
     $mail->Send();
     #$email = $head.$content.$foot;
     #return $email;
   }catch (Exception $e) {
-    #echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     echo("Deine Email ist nicht erreichbar.");
   };
 };
@@ -90,7 +110,23 @@ function send_invoice_email($to, $orderId){
 function send_invoice_email_to_shxrt($orderId, $userId){
   
   //build the message
-  $message = "Der User ".$userId." hat die Bestellung ".$orderId." aufgegeben.";
+  $message = 
+  '<html>
+  <body>
+    <p>Hallo, '.$userId.'</p>
+    <p>du hast soeben eine neue Bestellung mit der Bestellnummer <strong>#'.$orderId.'</strong> aufgegeben.</p>
+    <p>Die Rechnung befindet sich im Anhang dieser E-Mail.</p>
+    <br>
+    <p>Mit freundlichen Grüßen<br>
+    Dein Bestellservice</p>
+    <hr>
+    <p style="font-size: small; color: #555;">
+      --<br>
+      Diese Nachricht wurde automatisch generiert.<br>
+      Bitte antworten Sie nicht auf diese E-Mail.
+    </p>
+  </body>
+</html>';
 
   try {
     //set email connection
@@ -114,7 +150,12 @@ function send_invoice_email_to_shxrt($orderId, $userId){
     //set if email use html format
     $mail->isHTML(true);
     
-    $mail->addAttachment('data/invoice/invoice_order_'.$orderId.'.pdf', 'invoice_order_'.$orderId.'.pdf');
+    $filename = 'data/invoice/invoice_order_'.$orderId.'.pdf';
+    if (file_exists($filename)) {
+      $mail->addAttachment('data/invoice/invoice_order_'.$orderId.'.pdf', 'invoice_order_'.$orderId.'.pdf');
+    } else {
+      error_log("PDF nicht gefunden: $filename");
+    }
     //optional set html body with alternative plain text if html cant load
     #$mail->Body    = 'This is the HTML message body <b>in bold!</b>, when using ->isHTML(true)';
     #$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
@@ -161,7 +202,7 @@ function send_invoice_error_email_to_shxrt($orderId, $userId){
     #$email = $head.$content.$foot;
     #return $email;
   }catch (Exception $e) {
-    #echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     echo("Deine Email ist nicht erreichbar.");
   };
 };

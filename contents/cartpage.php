@@ -8,7 +8,9 @@ if(isset($_GET['cartItem'])){
       $cookieValue = $_GET['cartItem'];
       // Gültigkeit von 1 Tag
       $cookieExpiration = time() + (86400 * 1); 
-      setcookie('cartUpdated', $cookieValue, $cookieExpiration);
+      if (hasCookieConsent()) {
+        setcookie('cartUpdated', $cookieValue, $cookieExpiration);
+      }
       header("Location: ".$baseurl."index.php/cart");
       exit();
     }
@@ -19,7 +21,9 @@ if(isset($_GET['cartItem'])){
     $show_checkmark = $_COOKIE['cartUpdated'];
     // delete cookie 
     unset($_COOKIE['cartUpdated']);
-    setcookie('cartUpdated', "", time() - 3600);
+    if (hasCookieConsent()) {
+        setcookie('cartUpdated', "", time() - 3600);
+    }
   } 
 ?>
 <div id="banner">

@@ -16,7 +16,44 @@
 
   </head>
   <body>
+  <?php
+// Cookie-Prüfung
+$show_cookie_consent = !isset($_COOKIE['cookie_consent']) || $_COOKIE['cookie_consent'] === "false";
+
+// Wenn das Cookie noch nicht gesetzt ist, zeige das Pop-up
+if ($show_cookie_consent) {
+    echo '
+    <div class="cookie-modal-backdrop">
+        <div class="cookie-modal">
+            <h2>Cookies akzeptieren</h2>
+            <p>Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Klicken Sie auf „Akzeptieren“, um fortzufahren.</p>
+            <div class="cookie-modal-buttons">
+                <button onclick="acceptCookies()">Akzeptieren</button>
+                <button onclick="declineCookies()">Ablehnen</button>
+            </div>
+        </div>
+    </div>';
+}
+?>
+<script>
+  // Funktion zum Akzeptieren der Cookies
+function acceptCookies() {
+    // Setze das Cookie
+    document.cookie = "cookie_consent=true; path=/";
     
+    // Verstecke das Pop-up
+    document.querySelector('.cookie-modal-backdrop').style.display = 'none';
+}
+
+// Funktion zum Ablehnen der Cookies
+function declineCookies() {
+    // Setze das Cookie
+    //document.cookie = "cookie_consent=false; path=/";
+    
+    // Verstecke das Pop-up
+    document.querySelector('.cookie-modal-backdrop').style.display = 'none';
+}
+</script>
 
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href=<?php echo($baseurl)?>>
@@ -69,7 +106,9 @@
                   # anderen checkmark erstellen, der kleiner ist und dann verschwindet
                   // Cookie löschen
                   unset($_COOKIE['cartAdd']);
-                  setcookie('cartAdd', "", time() - 3600, '/');
+                  if (hasCookieConsent()) {
+                    setcookie('cartAdd', "", time() - 3600, '/');
+                  }
                   include('./elements/checkmark_header.html');
                 }
               ?>
@@ -79,6 +118,3 @@
       </nav>
 
 
-
-    <!--  hallo 
-  hallo-->

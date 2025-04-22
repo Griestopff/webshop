@@ -4,6 +4,10 @@
 // Get the number of items in the user's cart
 $countCartItems = countProductsInCart($userId);
 
+
+//$show_cookie_consent = !isset($_COOKIE['cookie_consent']) || $_COOKIE['cookie_consent'] === "false";
+
+
 // Include the header file
 include("header.php");
 

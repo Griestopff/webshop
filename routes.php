@@ -30,7 +30,9 @@ if (strpos($route, '/cart/add') !== false){
     $cookieExpiration = time() + (86400 * 1); 
     // path from main domain
     $cookiePath = "/"; 
-    setcookie('cartAdd', $cookieValue, $cookieExpiration,$cookiePath );
+    if (hasCookieConsent()) {
+        setcookie('cartAdd', $cookieValue, $cookieExpiration,$cookiePath );
+    }
    
     $routeParts = explode('/',$route);
     $productId = (int)$routeParts[3];
@@ -158,7 +160,8 @@ if (strpos($route, '/wishlist/remove') !== false){
 ########### PROFIL ###########
 
 if (strpos($route, '/account') !== false){
-    if(isset($_POST['userDelete']) && isset($_POST['userDeleteCode']) && isset($_POST['userEmail'])
+    if(userIsLoggedIn($userId)){
+        if(isset($_POST['userDelete']) && isset($_POST['userDeleteCode']) && isset($_POST['userEmail'])
         && $_POST['userDeleteCode'] !== NULL && $_POST['userDeleteCode'] !== ''
         && $_POST['userEmail'] !== NULL && $_POST['userEmail'] !== ''){
             //TODO baseurl hinzufügen
@@ -176,7 +179,16 @@ if (strpos($route, '/account') !== false){
                 </div>");
             }
             
+        }
+    }else{
+        echo("<div class='alert alert-warning text-center' role='alert'>
+        Du bist nicht eingeloggt!
+        </div>");
+        $redirect = $baseurl.'index.php/login';
+        header("Location: $redirect");
+    exit();
     }
+    
 }
 if (strpos($route, '/account/deleteUser') !== false){
     if(isset($_POST['delete']) && isset($_POST['deleteCode']) && isset($_POST['password'])

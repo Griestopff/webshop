@@ -21,7 +21,9 @@ if(isset($_GET['cart']) && isset($_GET['id']) && isset($_GET['color']) && isset(
         # anderen checkmark erstellen, der kleiner ist und dann verschwindet
         // Cookie löschen
         unset($_COOKIE['cartAdd']);
-        setcookie('cartAdd', "", time() - 3600, '/');
+        if (hasCookieConsent()) {
+          setcookie('cartAdd', "", time() - 3600, '/');
+        }
         include('./elements/checkmark_header.html');
       }
     ?>

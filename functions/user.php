@@ -303,7 +303,9 @@ function addProductToWishlist($productId){
         $cookieExpiration = time() + (400 * 1); 
         // path from main domain
         $cookiePath = "/"; 
-        setcookie('addedToWishlist', $cookieValue, $cookieExpiration,$cookiePath );
+        if (hasCookieConsent()) {
+            setcookie('addedToWishlist', $cookieValue, $cookieExpiration,$cookiePath );
+        }
 
       } catch(PDOException $e) {
         // Handle any errors that occur during the insertion e.g. duplicate
@@ -315,7 +317,9 @@ function addProductToWishlist($productId){
         $cookieExpiration = time() + (400 * 1); 
         // path from main domain
         $cookiePath = "/"; 
-        setcookie('alreadyInWishlist', $cookieValue, $cookieExpiration,$cookiePath );
+        if (hasCookieConsent()) {
+            setcookie('alreadyInWishlist', $cookieValue, $cookieExpiration,$cookiePath );
+        }
       }
 }
 
@@ -335,7 +339,9 @@ function removeProductFromWishlist($userId, $productId){
         $cookieExpiration = time() + (400 * 1); 
         // path from main domain
         $cookiePath = "/"; 
-        setcookie('removedFromWishlist', $cookieValue, $cookieExpiration,$cookiePath );
+        if (hasCookieConsent()) {
+            setcookie('removedFromWishlist', $cookieValue, $cookieExpiration,$cookiePath );
+        }
         
       } catch(PDOException $e) {
         // Handle any errors that occur during the insertion e.g. duplicate
@@ -347,7 +353,9 @@ function removeProductFromWishlist($userId, $productId){
         $cookieExpiration = time() + (400 * 1); 
         // path from main domain
         $cookiePath = "/"; 
-        setcookie('couldntRemoveFromWishlist', $cookieValue, $cookieExpiration,$cookiePath);
+        if (hasCookieConsent()) {
+            setcookie('couldntRemoveFromWishlist', $cookieValue, $cookieExpiration,$cookiePath);
+        }
       }
 }
 

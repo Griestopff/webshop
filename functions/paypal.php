@@ -133,8 +133,10 @@ function createPayPalOrder(string $accessToken, array $purchaseUnits, int $userI
     $experienceContextObject = new stdClass();
     $experienceContextObject->shipping_preference = "SET_PROVIDED_ADDRESS";
     //return_url need "http://" at the beginning
-    $experienceContextObject->return_url = "http://www.shxrt.de/index.php/checkout/order";
-    $experienceContextObject->cancel_url = "http://www.shxrt.de/index.php/cart";
+    #$experienceContextObject->return_url = "http://www.shxrt.de/index.php/checkout/order";
+    #$experienceContextObject->cancel_url = "http://www.shxrt.de/index.php/cart";
+    $experienceContextObject->return_url = "http://shop/index.php/checkout/order";
+    $experienceContextObject->cancel_url = "http://shop/index.php/cart";
     $experienceContextObject->brand_name = "SHXRT";
 
     $paypalObject = new stdClass();

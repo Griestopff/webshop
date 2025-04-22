@@ -1,5 +1,6 @@
 <?php
 
+
 //shows alerts on pages with wishlist button, if product was added or removed from wishlist
 function checkWishlistCookie(){
     if(isset($_COOKIE['addedToWishlist']) && $_COOKIE['addedToWishlist'] == 1) {
@@ -9,7 +10,9 @@ function checkWishlistCookie(){
         </div>");
         // delete the cookie
         unset($_COOKIE['addedToWishlist']);
-        setcookie('addedToWishlist', "", time() - 3600, '/');
+        if (hasCookieConsent()) {
+          setcookie('addedToWishlist', "", time() - 3600, '/');
+        }
       }
       if(isset($_COOKIE['alreadyInWishlist']) && $_COOKIE['alreadyInWishlist'] == 1) {
         # show alert
@@ -18,7 +21,9 @@ function checkWishlistCookie(){
         </div>");      
         // delete the cookie
         unset($_COOKIE['alreadyInWishlist']);
-        setcookie('alreadyInWishlist', "", time() - 3600, '/');
+        if (hasCookieConsent()) {
+          setcookie('alreadyInWishlist', "", time() - 3600, '/');
+        }
       }
       if(isset($_COOKIE['removedFromWishlist']) && $_COOKIE['removedFromWishlist'] == 1) {
         # show alert
@@ -27,7 +32,9 @@ function checkWishlistCookie(){
         </div>");      
         // delete the cookie
         unset($_COOKIE['removedFromWishlist']);
-        setcookie('removedFromWishlist', "", time() - 3600, '/');
+        if (hasCookieConsent()) {
+          setcookie('removedFromWishlist', "", time() - 3600, '/');
+        }
       }
       if(isset($_COOKIE['couldntRemoveFromWishlist']) && $_COOKIE['couldntRemoveFromWishlist'] == 1) {
         # show alert
@@ -36,6 +43,8 @@ function checkWishlistCookie(){
         </div>");      
         // delete the cookie
         unset($_COOKIE['couldntRemoveFromWishlist']);
-        setcookie('couldntRemoveFromWishlist', "", time() - 3600, '/');
+        if (hasCookieConsent()) {
+          setcookie('couldntRemoveFromWishlist', "", time() - 3600, '/');
+        }
       }
 }
